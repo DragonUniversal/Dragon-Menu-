@@ -4572,3 +4572,608 @@ function MakeTab(Configs)
          end
      end)
   end
+
+function AddTextLabel(parent, Configs)
+    local LabelName = Configs[1] or Configs.Name or "Text Label!!"
+    
+    local Frame = Create("Frame", parent, {
+      Size = UDim2.new(0.95, 0, 0.1, 0),
+      BackgroundColor3 = Configs_HUB.Cor_Options,
+      Name = "Frame"
+    })Corner(Frame)Stroke(Frame)
+    
+    local TextButton = Create("TextButton", Frame, {
+      TextSize = 12,
+      TextColor3 = Configs_HUB.Cor_Text,
+      Text = LabelName,
+      TextWrapped = true,
+      Size = UDim2.new(1, 0, 1, 0),
+      Position = UDim2.new(0, 0, 0, 0),
+      BackgroundTransparency = 1,
+      TextXAlignment = "Left",
+      Font = Configs_HUB.Text_Font
+    })
+    TextSetColor(TextButton)
+    return TextButton
+  end
+
+  function UpdateTextLabel(TextButton, newName)
+    if TextButton and TextButton:IsA("TextButton") then
+        TextButton.Text = newName or "Text Label!!"
+    end
+  end
+
+  function AddImageLabel(parent, Configs)
+    local LabelName = Configs[1] or Configs.Name or ""
+    local LabelImage = Configs[2] or Configs.Image or "Image Label"
+    
+    local Frame = Create("Frame", parent, {
+        Size = UDim2.new(0.3, 0, 0.6, 0),
+        BackgroundColor3 = Configs_HUB.Cor_Options,
+        Name = "Frame"
+    })Corner(Frame)Stroke(Frame)
+    
+    local TextButton = Create("TextButton", Frame, {
+        TextSize = 12,
+        TextColor3 = Configs_HUB.Cor_Text,
+        Text = LabelName,
+        TextWrapped = true,
+        Size = UDim2.new(0.76, 0, 0.2, 0),
+        BackgroundTransparency = 1,
+        Font = Configs_HUB.Text_Font
+    })TextSetColor(TextButton)
+    
+    local ExpandImageButton = Create("ImageButton", Frame, {
+        Size = UDim2.new(0.2, 0, 0.2, 0),
+        Position = UDim2.new(0.79, 0, 0., 0),
+        BackgroundColor3 = Configs_HUB.Cor_Options,
+        BackgroundTransparency = 1,
+        Image = "rbxassetid://74760368115181"
+    })Corner(ExpandImageButton)Stroke(ExpandImageButton)
+    
+    local ImageLabel1 = Create("ImageLabel", Frame, {
+        Image = LabelImage,
+        Size = UDim2.new(1, 0, 0.78, 0),
+        BackgroundTransparency = 1,
+        Position = UDim2.new(0, 0, 0.22, 0)
+    })
+
+    local isExpanded = false
+    
+    function ExpandImage()
+        if isExpanded then return end
+        isExpanded = true
+
+        local MenuBackground = Create("TextButton", Menu, {
+            BackgroundTransparency = 0.5,
+            BackgroundColor3 = Configs_HUB.Cor_Hub,
+            Size = UDim2.new(),
+            Position = UDim2.new(1 , 0, 0, 0),
+            AnchorPoint = Vector2.new(1, 0),
+            AutoButtonColor = false,
+            Text = "",
+            BackgroundTransparency = 0.2,
+        })
+
+        local ImageLabel = Create("ImageLabel", Menu, {
+            Image = LabelImage,
+            Size = UDim2.new(),
+            AnchorPoint = Vector2.new(1, 0),
+            BackgroundTransparency = 1,
+            Position = UDim2.new(0.35, 0, 0.2, 0)
+        })
+
+        local TextLabel = Create("TextLabel", Menu, {
+            TextSize = 12,
+            TextColor3 = Configs_HUB.Cor_Text,
+            Text = LabelName,
+            TextWrapped = true,
+            Size = UDim2.new(),
+            AnchorPoint = Vector2.new(1, 0),
+            Position = UDim2.new(0.95, 0, 0.43, 0), 
+            BackgroundTransparency = 1,
+            Font = Configs_HUB.Text_Font
+        })TextSetColor(TextLabel)
+
+        local ExitExpandImageButton = Create("ImageButton", Menu, {
+            Size = UDim2.new(),
+            Position = UDim2.new(0.95, 0, 0.21, 0),
+            AnchorPoint = Vector2.new(1, 0),
+            BackgroundColor3 = Configs_HUB.Cor_Options,
+            BackgroundTransparency = 0,
+            Image = "rbxthumb://type=Asset&id=103081297652130&w=420&h=420"
+        })
+        Corner(ExitExpandImageButton)
+        Stroke(ExitExpandImageButton)
+
+        ExitExpandImageButton.MouseButton1Click:Connect(function()
+          CreateTween(ImageLabel, "Size", UDim2.new(), 0.3, false)
+          CreateTween(TextLabel, "Size", UDim2.new(), 0.3, false)
+          CreateTween(ExitExpandImageButton, "Size", UDim2.new(), 0.3, false)
+          CreateTween(MenuBackground, "Size", UDim2.new(), 0.3, true)
+          MenuBackground:Destroy()
+          ImageLabel:Destroy()
+          TextLabel:Destroy()
+          ExitExpandImageButton:Destroy()
+          isExpanded = false
+       end)
+
+        CreateTween(MenuBackground, "Size", UDim2.new(1, 0, 1, 0), 0.3, false)
+        CreateTween(ImageLabel, "Size", UDim2.new(0.33, 0, 0.67, 0), 0.3, false)
+        CreateTween(TextLabel, "Size", UDim2.new(0.67 -0.1, 0, 0.2, 0), 0.3, false)
+        TypeTextLabel(TextLabel, LabelName, 0.15)
+        CreateTween(ExitExpandImageButton, "Size", UDim2.new(0.1, 0, 0.2, 0), 0.3, false)
+    end
+
+    ExpandImageButton.MouseButton1Click:Connect(ExpandImage)
+    return ImageLabel
+  end
+
+  local AddVideoFrame = loadstring(game:HttpGet("https://raw.githubusercontent.com/hooaczx/Script/main/AddVideo"))()
+  
+  function AddParagraph(parent, Configs)
+    local ParagraphName1 = Configs[1] or Configs.Title or "Paragraph!!"
+    local ParagraphName2 = Configs[1] or Configs.Text or "Paragraph!!"
+    
+    local Frame = Create("Frame", parent, {
+      Size = UDim2.new(0.95, 0, 0.1, 0),
+      BackgroundColor3 = Configs_HUB.Cor_Options,
+      Name = "Frame",
+      AutomaticSize = "Y"
+    })Corner(Frame)Stroke(Frame)Create("UIListLayout", Frame)Create("UIPadding", Frame, {
+      PaddingLeft = UDim.new(0, 20), PaddingRight = UDim.new(0, 10), PaddingTop = UDim.new(0, 5), PaddingBottom = UDim.new(0, 5)
+    })
+    
+    local TextButton = Create("TextButton", Frame, {
+      Name = "Frame",
+      TextSize = 12,
+      TextColor3 = Configs_HUB.Cor_Text,
+      Text = ParagraphName1,
+      Size = UDim2.new(1, 0, 0, 0),
+      AutomaticSize = "Y",
+      BackgroundTransparency = 1,
+      TextXAlignment = "Left",
+      TextYAlignment = "Top",
+      Font = Configs_HUB.Text_Font,
+      TextWrapped = true
+    })TextSetColor(TextButton)
+    
+    local TextLabel = Create("TextLabel", Frame, {
+      Name = "Frame",
+      Size = UDim2.new(1, 0, 0, 0),
+      BackgroundTransparency = 1,
+      AutomaticSize = "Y",
+      TextXAlignment = "Left",
+      TextYAlignment = "Top",
+      TextColor3 = Configs_HUB.Cor_DarkText,
+      TextSize = 11,
+      Text = ParagraphName2,
+      Font = Configs_HUB.Text_Font,
+      TextWrapped = true
+    })
+    return {TextButton, TextLabel}
+  end
+  
+  function AddSection(parent, Configs)
+    local SectionName = Configs[1] or Configs.Name or "Section!!"
+    
+    local Frame = Create("Frame", parent, {
+      Size = UDim2.new(0.95, 0, 0.1, 0),
+      Position = UDim2.new(0.05, 0, 0, 0),
+      BackgroundColor3 = Configs_HUB.Cor_Hub,
+      Name = "Frame",
+      Transparency = 1
+    })Corner(Frame)
+    
+    local TextButton = Create("TextButton", Frame, {
+      TextSize = 12,
+      TextColor3 = Configs_HUB.Cor_DarkText,
+      Text = SectionName,
+      Size = UDim2.new(1, 0, 1, 0),
+      Position = UDim2.new(0, 10, 0, 0),
+      BackgroundTransparency = 1,
+      TextXAlignment = "Left",
+      Font = Configs_HUB.Text_Font
+    })
+    return TextButton
+  end
+
+  function AddMusicPlayer(parent, Configs)
+    local Default = Configs.Default or ""
+    local ClearText = Configs.ClearText or false
+    local PlaceholderText = Configs.PlaceholderText or "Enter Music ID"
+
+    local Frame = Create("Frame", parent, {
+        Size = UDim2.new(0.95, 0, 0.7, 0),
+        BackgroundColor3 = Configs_HUB.Cor_Options,
+        Name = "MusicPlayerFrame",
+    })
+    Corner(Frame)
+    Stroke(Frame)
+    
+    local MusicPlayerText = Create("TextLabel", Frame, {
+        Size = UDim2.new(1, 0, 0.1, 0),
+        BackgroundColor3 = Configs_HUB.Cor_Options,
+        Text = "Music Player",
+        TextColor3 = Configs_HUB.Cor_Text,
+        Font = Configs_HUB.Text_Font,
+        TextScaled = true,
+        BackgroundTransparency = 1,
+    })
+    
+    local LineMusicPlayerText = Create("Frame", MusicPlayerText, {
+      Size = UDim2.new(1, 0, 0, 1),
+      Position = UDim2.new(0, 0, 1, 0),
+      BackgroundColor3 = Configs_HUB.Cor_Stroke,
+      BorderSizePixel = 0
+    })
+    
+    local NameSongFrame = Create("TextLabel", Frame, {
+        Size = UDim2.new(1, 0, 0.2, 0),
+        Position = UDim2.new(0, 0, 0.1, 0),
+        BackgroundColor3 = Configs_HUB.Cor_Options,
+        Text = "No Song",
+        TextColor3 = Configs_HUB.Cor_Text,
+        Font = Configs_HUB.Text_Font,
+        TextScaled = true,
+        BackgroundTransparency = 1,
+    })
+
+    local TimeSongText = Create("TextLabel", Frame, {
+        Size = UDim2.new(0.2, 0, 0.1, 0),
+        Position = UDim2.new(0.1, 0, 0.73, 0),
+        BorderSizePixel = 0,
+        Text = "00:00",
+        TextColor3 = Configs_HUB.Cor_Text,
+        Font = Configs_HUB.Text_Font,
+        TextScaled = true,
+        BackgroundTransparency = 1,
+    })
+
+    local TextID = Create("TextLabel", Frame, {
+        Size = UDim2.new(0.1, 0, 0.1, 0),
+        Position = UDim2.new(0.4, 0, 0.4, 0),
+        Text = "ID",
+        TextColor3 = Configs_HUB.Cor_Text,
+        Font = Configs_HUB.Text_Font,
+        TextScaled = true,
+        BackgroundTransparency = 1,
+    })
+
+    local CreditLabel = Create("TextLabel", Frame, {
+        Size = UDim2.new(0.35, 0, 0.2, 0),
+        Position = UDim2.new(0.01, 0, 0.34, 0),
+        Text = "Created by: Not found",
+        TextColor3 = Configs_HUB.Cor_Text,
+        Font = Configs_HUB.Text_Font,
+        TextScaled = true,
+        BackgroundTransparency = 1,
+    })
+
+    local TextBoxID = Create("TextBox", Frame, {
+        Size = UDim2.new(0.27, 0, 0.2, 0),
+        Position = UDim2.new(0.53, 0, 0.34, 0),
+        TextColor3 = Configs_HUB.Cor_Text,
+        Text = Default,
+        ClearTextOnFocus = ClearText,
+        PlaceholderText = PlaceholderText,
+        TextScaled = true,
+        Font = Configs_HUB.Text_Font,
+        BackgroundTransparency = 1,
+    })
+    
+    local LineTextboxId = Create("Frame", TextBoxID, {
+      Size = UDim2.new(1, 0, 0, 1),
+      Position = UDim2.new(0.5, 0, 1, 0),
+      AnchorPoint = Vector2.new(0.5, 0.5),
+      BackgroundColor3 = Configs_HUB.Cor_Stroke,
+      BorderSizePixel = 0
+    })
+    
+    TextBoxID.MouseEnter:Connect(function()
+      CreateTween(LineTextboxId, "Size", UDim2.new(0, 0, 0, 1), 0.3, true)
+      CreateTween(LineTextboxId, "Size", UDim2.new(1, 0, 0, 1), 0.3, true)
+    end)
+
+    local Toggle = Create("ImageButton", Frame, {
+        Size = UDim2.new(0.09, 0, 0.19, 0),
+        Position = UDim2.new(0.55, 0, 0.64, 0),
+        AnchorPoint = Vector2.new(1, 0),
+        BackgroundColor3 = Configs_HUB.Cor_Options,
+        BackgroundTransparency = 0,
+        Image = "rbxthumb://type=Asset&id=98070627958036&w=420&h=420"
+    })
+
+    local Line = Create("Frame", Frame, {
+        Size = UDim2.new(0.8, 0, 0.05, 0),
+        Position = UDim2.new(0.1, 0, 0.84, 0),
+        BorderSizePixel = 0,
+        BackgroundColor3 = Configs_HUB.Cor_Stroke,
+    })
+
+    local Progress = Create("Frame", Line, {
+        Size = UDim2.new(0, 0, 1, 0),
+        Position = UDim2.new(0, 0, 0, 0),
+        BackgroundColor3 = Configs_HUB.Cor_Text,
+        BorderSizePixel = 0,
+    })
+
+    local sound = Instance.new("Sound")
+    sound.Parent = Frame
+
+    local function formatTime(seconds)
+        local minutes = math.floor(seconds / 60)
+        local remainingSeconds = seconds % 60
+        return string.format("%d:%02d", minutes, remainingSeconds)
+    end
+
+    local pv
+
+    local function updateProgressBar()
+        if pv then
+           pv:Disconnect()
+           pv = nil
+        end
+        pv = RunService.RenderStepped:Connect(function()
+            if sound and sound.IsPlaying then
+                local progress = sound.TimePosition / sound.TimeLength
+                Progress.Size = UDim2.new(progress, 0, 1, 0)
+                TimeSongText.Text = formatTime(math.floor(sound.TimePosition)) .. " / " .. formatTime(math.floor(sound.TimeLength))
+            else
+                 if pv then
+                     pv:Disconnect()
+                     pv = nil
+                 end
+            end
+       end)
+   end
+
+    local function extractAssetId(input)
+       local assetId = input:match("rbxassetid://(%d+)") 
+       if assetId then
+           return assetId
+       end
+       assetId = input:match("https://www.roblox.com/asset/%?id=(%d+)")
+        if assetId then
+            return assetId
+        end
+        assetId = input:match("^(%d+)$")
+        if assetId then
+            return assetId
+        end
+        return nil
+      end
+
+Toggle.MouseButton1Click:Connect(function()
+    local inputText = TextBoxID.Text
+    local assetId = extractAssetId(inputText)
+    if not assetId then
+        NameSongFrame.Text = "Invalid ID"
+        CreditLabel.Text = "Please enter a valid  ID of asset song"
+        return
+    end
+    local productInfo
+    local success, err = pcall(function()
+        productInfo = game:GetService("MarketplaceService"):GetProductInfo(assetId)
+    end)
+    if not success or not productInfo then
+        NameSongFrame.Text = "Failed to fetch asset info"
+        CreditLabel.Text = "Error: " .. tostring(err)
+        return
+    end
+    if productInfo.AssetTypeId ~= 3 then
+        NameSongFrame.Text = "id Asset is not a Song"
+        CreditLabel.Text = "id Not a Song"
+        return
+    end
+    if not productInfo.IsForSale then
+        NameSongFrame.Text = "Song not for sale, check at" .. " https://www.roblox.com/library/" .. assetId
+        CreditLabel.Text = "Creator by: " .. (productInfo.Creator and productInfo.Creator.Name or "Unknown")
+        return
+    end
+    if sound.IsPlaying then
+        soundsavedTimePosition = sound.TimePosition
+        sound:Stop()
+        updateProgressBar()
+        NameSongFrame.Text = "Stopped"
+        CreditLabel.Text = "Created by: Not found"
+        Toggle.Image = "rbxthumb://type=Asset&id=98070627958036&w=420&h=420"
+        musicPlaying = false
+    else
+        local successLoad, loadErr = pcall(function()
+            sound.SoundId = "rbxassetid://" .. assetId
+            sound:Play()
+            sound.TimePosition = soundsavedTimePosition
+        end)
+        if not successLoad then
+            NameSongFrame.Text = "Failed to load/play song"
+            CreditLabel.Text = "Asset is private or restricted access or cannot be loaded"
+            Toggle.Image = "rbxthumb://type=Asset&id=98070627958036&w=420&h=420"
+            return
+        end
+        NameSongFrame.Text = productInfo.Name
+        Toggle.Image = "rbxthumb://type=Asset&id=133872094700280&w=420&h=420"
+        CreditLabel.Text = "Created by: " .. (productInfo.Creator and productInfo.Creator.Name or "Unknown")
+        musicPlaying = true
+    end
+end)
+end
+
+function AddFeedBack(parent, Configs)
+    local WebhookUrl = Configs.WebhookUrl
+    local ClearText = Configs.ClearText or false
+    
+    local Frame = Create("Frame", parent, {
+        Size = UDim2.new(0.95, 0, 0.7, 0),
+        BackgroundColor3 = Configs_HUB.Cor_Options,
+        Name = "MusicPlayerFrame",
+    })
+    Corner(Frame)
+    Stroke(Frame)
+    
+    local TextLabel = Create("TextLabel", Frame, {
+        Size = UDim2.new(0.9, 0, 0.1, 0),
+        Position = UDim2.new(0.05, 0, 0.03, 0),
+        TextWrapped = true,
+        BackgroundTransparency = 1,
+        Font = Configs_HUB.Text_Font,
+        TextColor3 = Configs_HUB.Cor_Text,
+        Text = "Feedback"
+    })
+
+    local TextBox = Create("TextBox", Frame, {
+        Size = UDim2.new(0.9, 0, 0.6, 0),
+        Position = UDim2.new(0.05, 0, 0.125, 0),
+        Text = "", 
+        PlaceholderText = "",
+        ClearTextOnFocus = ClearText,
+        Font = Configs_HUB.Text_Font,
+        TextColor3 = Configs_HUB.Cor_Text,
+        TextXAlignment = Enum.TextXAlignment.Left,
+        TextYAlignment = Enum.TextYAlignment.Top
+    })
+    Corner(TextBox)
+    
+    local SendButton = Create("TextButton", Frame, {
+        Size = UDim2.new(0.4, 0, 0.2, 0),
+        Position = UDim2.new(0.3, 0, 0.75, 0),
+        Text = "Send",
+        BackgroundColor3 = Configs_HUB.Cor_Button,
+        TextColor3 = Color3.new(1, 1, 1),
+        Font = Enum.Font.SourceSansBold,
+        TextSize = 18,
+    })
+    Corner(SendButton)
+    
+    SendButton.MouseButton1Click:Connect(function()
+        local message = TextBox.Text
+        if message == "" then
+            return
+        else
+        local player = game.Players.LocalPlayer
+        local playerUsername = player.Name
+        local playerProfileLink = string.format("https://www.roblox.com/users/%d/profile", player.UserId)
+
+        local avatarResponse
+        local success, errorMsg = pcall(function()
+            avatarResponse = game:HttpGet(string.format(
+                "https://thumbnails.roblox.com/v1/users/avatar?userIds=%d&size=420x420&format=Png&isCircular=true",
+                player.UserId
+            ))
+        end)
+       
+        local avatarData, AvatarImage
+        if success and avatarResponse then
+            avatarData = game:GetService("HttpService"):JSONDecode(avatarResponse).data[1]
+            AvatarImage = avatarData and avatarData.imageUrl or "Unknown"
+        else
+            warn("Failed to fetch avatar image:", errorMsg)
+            AvatarImage = "Unknown"
+        end
+
+        local data = {
+            ["username"] = playerUsername,
+            ["avatar_url"] = AvatarImage,
+            ["embeds"] = {
+                {
+                    ["title"] = "Message from " .. playerUsername,
+                    ["description"] = message.."\n\n[Click here to view profile](" .. playerProfileLink .. ")",
+                    ["color"] = 0x7289DA
+                }
+            }
+        }
+
+        local newdata = game:GetService("HttpService"):JSONEncode(data)
+        local headers = {["content-type"] = "application/json"}
+        local request = http_request or request or (syn and syn.request) or (fluxus and fluxus.request) or (http and http.request)
+
+        if request then
+            local success, response = pcall(function()
+                return request({
+                    Url = WebhookUrl,
+                    Body = newdata,
+                    Method = "POST",
+                    Headers = headers
+                })
+            end)
+
+            if success then
+                warn("success to send webhook request")
+            else
+                warn("Failed to send webhook request:", response)
+            end
+        else
+            warn("HTTP request function is not available.")
+          end
+        end
+    end)
+end
+
+  function AddDiscord(parent, Configs)
+    local DiscordLink = Configs[1] or Configs.DiscordLink or "https://discord.gg/"
+    local DiscordIcon = Configs[2] or Configs.DiscordIcon or "rbxassetid://"
+    local DiscordTitle = Configs[3] or Configs.DiscordTitle or ""
+    
+    local Frame = Create("Frame", parent, {
+      Size = UDim2.new(1, 0, 0, 110),
+      BackgroundColor3 = Color3.fromRGB(30, 30, 30),
+      Name = "Frame",
+      AutomaticSize = "Y"
+    })
+    
+    local LinkLabel = Create("TextLabel", Frame, {
+      Size = UDim2.new(1, 0, 0, 25),
+      Text = DiscordLink,
+      TextXAlignment = "Left",
+      BackgroundTransparency = 1,
+      Position = UDim2.new(0, 12, 0, 0),
+      TextColor3 = Color3.fromRGB(0, 120, 255),
+      Font = Enum.Font.GothamBold,
+      TextSize = 14
+    })
+    
+    local TitleLabel = Create("TextLabel", Frame, {
+      Size = UDim2.new(1, 0, 0, 25),
+      Text = DiscordTitle,
+      TextXAlignment = "Left",
+      BackgroundTransparency = 1,
+      Position = UDim2.new(0, 60, 0, 25),
+      TextColor3 = Color3.fromRGB(200, 200, 200),
+      Font = Enum.Font.GothamBold,
+      TextSize = 14
+    })
+    
+    local IconLabel = Create("ImageLabel", Frame, {
+      Size = UDim2.new(0, 40, 0, 40),
+      AnchorPoint = Vector2.new(0, 0.5),
+      Position = UDim2.new(0, 12, 0.45, 0),
+      Image = DiscordIcon
+    })Corner(IconLabel)
+    
+    local JoinButton = Create("TextButton", Frame, {
+      Size = UDim2.new(1, -24, 0, 25),
+      AnchorPoint = Vector2.new(0.5, 1),
+      Position = UDim2.new(0.5, 0, 1, -8),
+      Text = "Join",
+      Font = Enum.Font.GothamBold,
+      TextSize = 15,
+      TextColor3 = Color3.fromRGB(220, 220, 220),
+      BackgroundColor3 = Color3.fromRGB(50, 200, 50)
+    })Corner(IconLabel)
+    
+    local time = tick()
+    ClickConter = 0
+    JoinButton.MouseButton1Click:Connect(function()
+      if ClickConter == 0 or tick() - time > 5 then time = tick() setclipboard(DiscordLink) ClickConter = ClickConter + 1
+        JoinButton.Text = "Copied to Clipboard"
+        JoinButton.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+        JoinButton.TextColor3 = Color3.fromRGB(150, 150, 150)
+        task.wait(5)
+        JoinButton.Text = "Join"
+        JoinButton.BackgroundColor3 = Color3.fromRGB(50, 200, 50)
+        JoinButton.TextColor3 = Color3.fromRGB(220, 220, 220)
+      end
+     end)
+   end
+   return Menu
+end

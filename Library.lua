@@ -1,13 +1,13 @@
 repeat wait() until game:IsLoaded()
 
 local Configs_HUB = {
-  Cor_Hub = Color3.fromRGB(5, 5, 5),            -- Fundo do Hub bem escuro
-  Cor_Options = Color3.fromRGB(0, 0, 0),        -- Fundo das opções (preto)
-  Cor_Stroke = Color3.fromRGB(255, 0, 0),       -- Contorno vermelho
-  Cor_Text = Color3.fromRGB(255, 0, 0),         -- Texto principal vermelho
-  Cor_DarkText = Color3.fromRGB(255, 255, 255), -- Texto secundário branco
-  Corner_Radius = UDim.new(0, 12),              -- Cantos arredondados
-  Text_Font = Enum.Font.FredokaOne              -- Fonte estilosa
+  Cor_Hub = Color3.fromRGB(5, 5, 5),            
+  Cor_Options = Color3.fromRGB(0, 0, 0),        
+  Cor_Stroke = Color3.fromRGB(255, 0, 0),       
+  Cor_Text = Color3.fromRGB(255, 0, 0),         
+  Cor_DarkText = Color3.fromRGB(255, 255, 255), 
+  Corner_Radius = UDim.new(0, 12),              
+  Text_Font = Enum.Font.FredokaOne              
 }
 
 

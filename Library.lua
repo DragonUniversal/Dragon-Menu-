@@ -1800,7 +1800,7 @@ local iconvideo = Create("VideoFrame", frameinfogui, {
     BackgroundColor3 = Configs_HUB.Cor_Hub,
     BackgroundTransparency = 1,
     Looped = true
-})local iconvideourl = "https://github.com/hooaczx/Video/raw/refs/heads/main/vintage-poppy.mp4"
+})local iconvideourl = ""
 local iveo = loadstring(game:HttpGet("https://raw.githubusercontent.com/hooaczx/Script/main/GetVideo"))()
 iveo(iconvideo, iconvideourl)
 
@@ -2985,7 +2985,7 @@ local useridplayers = Create("TextLabel", frameinfoplayer, {
 local noplayers = Create("TextLabel", frameinfoplayer, {
     Size = UDim2.new(0.77, 0, 1, 0),
     Position = UDim2.new(0.23, 0, 0, 0),
-    Text = "Server No Player😔",
+    Text = "Server No Player",
     TextXAlignment = "Left",
     BackgroundTransparency = 1,
     TextColor3 = Configs_HUB.Cor_Text,
@@ -3028,7 +3028,7 @@ functions.Look = function()
 end
 
 ShiftLockButton.MouseButton1Click:Connect(function()
-    if not functions.canClick("Free ShiftLock😌") or Tweening then return end
+    if not functions.canClick("Free ShiftLock") or Tweening then return end
     Tweening = true    
     if not ShiftLockmaingui then
         ShiftLockmaingui = RunService.RenderStepped:Connect(function()

@@ -1793,17 +1793,6 @@ local GameName = Create("TextLabel", frameinfogui, {
     TextScaled = true,
 })TextSetColor(GameName)
 
-local iconvideo = Create("VideoFrame", frameinfogui, {
-    Size = UDim2.new(0.05, 0, 0.104, 0),
-    Position = UDim2.new(0.315, 0, 0.638, 0),
-    AnchorPoint = Vector2.new(0.05, 0.06),
-    BackgroundColor3 = Configs_HUB.Cor_Hub,
-    BackgroundTransparency = 1,
-    Looped = true
-})local iconvideourl = ""
-local iveo = loadstring(game:HttpGet("https://raw.githubusercontent.com/hooaczx/Script/main/GetVideo"))()
-iveo(iconvideo, iconvideourl)
-
 local welcometext = Create("TextLabel", frameinfogui, {
     Size = UDim2.new(0.18, 0, 0.065, 0),
     Text = "Hope you Enjoy The My Script",

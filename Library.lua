@@ -174,13 +174,13 @@ CreateTween1 = functionCreate.CreateTween1
 TextSetColor = functionCreate.TextSetColor
 
 local parentgui = (gethui and gethui()) or game:GetService("CoreGui")
-local ScreenFind = parentgui:FindFirstChild("hcx hub library1")
+local ScreenFind = parentgui:FindFirstChild("hlibrary2")
 if ScreenFind then
     ScreenFind:Destroy()
 end
 
 local ScreenGui = Create("ScreenGui", parentgui, {
-  Name = "hcx hub library1",
+  Name = "Menu library2",
   DisplayOrder = math.huge,
   IgnoreGuiInset = true
 })
@@ -199,7 +199,7 @@ local Menu_Notifi = Create("Frame", ScreenGui, {
 })
 
 functionCreate.MakeNotifi = function(Configs)
-  local Title = Configs.Title or "REDz HUB"
+  local Title = Configs.Title or "Dragon Menu"
   local text = Configs.Text or "Notificaรงรฃo"
   local timewait = Configs.Time or 5
   
@@ -288,8 +288,8 @@ end
 MakeNotifi = functionCreate.MakeNotifi
 
 function MakeWindow(Configs)
- local title = Configs.Hub.Title or "hcx hub"
- local Anim_Title = Configs.Hub.Animation or "by : 1hooaczx1"
+ local title = Configs.Hub.Title or "hub"
+ local Anim_Title = Configs.Hub.Animation or "by : Dragonscript"
   
   local Menu = Create("Frame", ScreenGui, {
       BackgroundColor3 = Configs_HUB.Cor_Hub,
@@ -583,7 +583,7 @@ local function notify(params)
     local NotificationImage = Create("ImageLabel", NotificationLabelText, {
         Size = UDim2.new(0, 70, 0, 70),
         Position = UDim2.new(-0.2, 0, 0, 0),
-        Image = "rbxassetid://" .. image,
+        Image = "rbxassetid://137903795082783" .. image,
         BackgroundTransparency = 1
     })
 

@@ -2023,14 +2023,14 @@ local position = player.Character.HumanoidRootPart.Position
 
 local positionString = string.format("Vector3.new(%f, %f, %f)", position.X, position.Y, position.Z)
 local teleportCode = [[
---1hooaczx1: You can take it, paste it into your Executor and press execute. And it will teleport you to where you originally pressed Copy
+-- Dragon777: You can take it, paste it into your Executor and press execute. And it will teleport you to where you originally pressed Copy
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(]] .. positionString .. [[)
 ]]
 setclipboard(teleportCode)
 end) 
 Join.MouseButton1Click:Connect(function()
 local teleportCode = [[
--- 1hooaczx1: This script will take you to the game"]]..game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name..[["
+-- Dragon777: This script will take you to the game"]]..game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name..[["
 --If it doesn't work then the script isn't working
 game:GetService("TeleportService"):Teleport(]] .. game.PlaceId .. [[, player)
 ]]

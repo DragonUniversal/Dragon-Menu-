@@ -648,7 +648,7 @@ notify({
       Title = "Hi",
       Text = "Hope you enjoy using it\nWhen I update the Gui, I would like to say that it may cause the ui to not work or crash, so please understand",
       buttonText = "ok",
-      imageID = "",
+      imageID = "rbxassetid://137903795082783",
       guiSize = Vector2.new(400, 70),
 })
 
@@ -3403,7 +3403,7 @@ RunServerlock("Lock1", "no", function()
     end
     CH = {}
     frame9.Text = string.format(
-        "DisplayName: %s\nUserId: %s\nAccount⚒️: %s",
+        "DisplayName: %s\nUserId: %s\nAccount: %s",
         game.Players.LocalPlayer.DisplayName,
         game.Players.LocalPlayer.UserId,
         functions.getAccountCreationDate(game.Players.LocalPlayer.AccountAge)
@@ -3512,7 +3512,7 @@ RunServerlock("Lock3", 5, function()
     local getCreatorGameandGroupinfo = loadstring(game:HttpGet("https://raw.githubusercontent.com/hooaczx/Script/main/Group%7CCreatorGame%7Cinfo"))()
     local creatorInfo = getCreatorGameandGroupinfo(_cvZ)
     frame199.Text = string.format(
-        "Name: %s\nDisplayName: %s\nUserId: %s\nGroup Status: %s\nAccount⚒️: %s",
+        "Name: %s\nDisplayName: %s\nUserId: %s\nGroup Status: %s\nAccount: %s",
         creatorInfo.Username,
         creatorInfo.DisplayName,
         tostring(creatorInfo.UserId),

@@ -287,7 +287,7 @@ end
 MakeNotifi = functionCreate.MakeNotifi
 
 function MakeWindow(Configs)
- local title = Configs.Hub.Title or "hub"
+ local title = Configs.Hub.Title or "Menu"
  local Anim_Title = Configs.Hub.Animation or "by : Dragonscript"
   
   local Menu = Create("Frame", ScreenGui, {
@@ -645,10 +645,10 @@ local function notify(params)
 end
 
 notify({
-      Title = "Hi",
-      Text = "Hope you enjoy using it\nWhen I update the Gui, I would like to say that it may cause the ui to not work or crash, so please understand",
-      buttonText = "ok",
-      imageID = "rbxassetid://137903795082783",
+      Title = "",
+      Text = "",
+      buttonText = "",
+      imageID = "",
       guiSize = Vector2.new(400, 70),
 })
 

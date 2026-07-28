@@ -2074,3 +2074,503 @@ Thickness = 1,
 Transparency = 0.1,
 })
 
+local gradient_6_1 = Create("UIGradient", stroke_6_1, {
+Color = ColorSequence.new{
+ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 0, 0)),
+ColorSequenceKeypoint.new(0.25, Color3.fromRGB(0, 0, 0)),
+ColorSequenceKeypoint.new(0.45, Color3.fromRGB(0, 0, 255)),
+ColorSequenceKeypoint.new(0.65, Color3.fromRGB(0, 0, 0)),
+ColorSequenceKeypoint.new(0.75, Color3.fromRGB(0, 255, 0)),
+ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 0))
+},
+Rotation = 0
+})
+
+local switchpage = Create("TextButton", frameswitchpage, {
+Size = UDim2.new(1, 0, 1, 0),
+BackgroundColor3 = Configs_HUB.Cor_Hub,
+BackgroundTransparency = 1,
+Font = Configs_HUB.Text_Font,
+TextColor3 = Configs_HUB.Cor_Text,
+TextScaled = true,
+Text = "Switch To Page 2",
+})TextSetColor(switchpage)Corner(switchpage, {CornerRadius = UDim.new(0.15, 0)})
+local stroke_6_2 = Create("UIStroke", switchpage, {
+Color = Color3.fromRGB(255, 255, 255),
+Thickness = 1,
+Transparency = 0.1,
+})
+
+local gradient_6_2 = Create("UIGradient", stroke_6_2, {
+Color = ColorSequence.new{
+ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 0, 0)),
+ColorSequenceKeypoint.new(0.25, Color3.fromRGB(0, 0, 0)),
+ColorSequenceKeypoint.new(0.45, Color3.fromRGB(0, 0, 255)),
+ColorSequenceKeypoint.new(0.65, Color3.fromRGB(0, 0, 0)),
+ColorSequenceKeypoint.new(0.75, Color3.fromRGB(0, 255, 0)),
+ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 0))
+},
+Rotation = 0
+})
+
+switchpage.MouseButton1Click:Connect(function()
+if not waitswitchpage then
+waitswitchpage = true
+switchtodescription = not switchtodescription
+wait(1.1)
+waitswitchpage = false
+end
+end)
+
+local description = Create("Frame", frameinfogui, {
+Size = UDim2.new(0.45, 0, 0.6, 0),
+Position = UDim2.new(0.02, 0, 0.37 - 1, 0),
+AnchorPoint = Vector2.new(0.032, 0.51),
+BackgroundColor3 = Configs_HUB.Cor_Hub,
+BackgroundTransparency = 0.5,
+Visible = false
+})Corner(description)Stroke(description)
+
+local info_d = Create("Frame", frameinfogui, {
+Size = UDim2.new(0.24, 0, 0.75, 0),
+Position = UDim2.new(0.48, 0, 0.24 - 1, 0),
+AnchorPoint = Vector2.new(0.04, 0.21),
+BackgroundColor3 = Color3.fromRGB(0, 0, 0),
+BackgroundTransparency = 0.5,
+})Corner(info_d, {CornerRadius = UDim.new(0.05, 0)})
+local stroke_7 = Create("UIStroke", info_d, {
+Color = Color3.fromRGB(255, 255, 255),
+Thickness = 1,
+Transparency = 0.1,
+})
+
+local gradient_7 = Create("UIGradient", stroke_7, {
+Color = ColorSequence.new{
+ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 0, 0)),
+ColorSequenceKeypoint.new(0.17, Color3.fromRGB(255, 165, 0)),
+ColorSequenceKeypoint.new(0.33, Color3.fromRGB(255, 255, 0)),
+ColorSequenceKeypoint.new(0.50, Color3.fromRGB(0, 255, 0)),
+ColorSequenceKeypoint.new(0.67, Color3.fromRGB(0, 127, 255)),
+ColorSequenceKeypoint.new(0.83, Color3.fromRGB(139, 0, 255)),
+ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 0, 255))
+},
+Rotation = 0
+})
+
+local info_T = Create("TextLabel", info_d, {
+Size = UDim2.new(1, 0, 0.93, 0),
+Position = UDim2.new(0, 0, 0.07, 0),
+BackgroundColor3 = Color3.fromRGB(0, 0, 0),
+BackgroundTransparency = 1,
+Font = Configs_HUB.Text_Font,
+TextColor3 = Configs_HUB.Cor_Text,
+TextXAlignment = Enum.TextXAlignment.Left,
+TextScaled = true,
+Text = "Finding info..."
+})TextSetColor(info_T)Corner(info_T, {CornerRadius = UDim.new(0.05, 0)})
+local listLayout4 = Create("UIListLayout", info_T, {FillDirection = Enum.FillDirection.Vertical, HorizontalAlignment = Enum.HorizontalAlignment.Left, VerticalAlignment = Enum.VerticalAlignment.Top, Padding = UDim.new(0, 5)})
+
+local info_TC = Create("TextLabel", info_d, {
+Size = UDim2.new(1, 0, 0.93, 0),
+Position = UDim2.new(0, 0, 0.07, 0),
+BackgroundColor3 = Color3.fromRGB(0, 0, 0),
+BackgroundTransparency = 1,
+Font = Configs_HUB.Text_Font,
+TextColor3 = Configs_HUB.Cor_Text,
+TextScaled = true,
+Text = "If you don't want it shown, just turn it off",
+TextTransparency = 1,
+Visible = false
+})TextSetColor(info_TC)Corner(info_TC, {CornerRadius = UDim.new(0.05, 0)})
+
+local info_C = Create("TextButton", info_d, {
+Size = UDim2.new(0.1, 0, 0.065, 0),
+Position = UDim2.new(0.89, 0, 0.005, 0),
+BackgroundColor3 = Color3.fromRGB(0, 0, 0),
+BackgroundTransparency = 1,
+Font = Configs_HUB.Text_Font,
+TextColor3 = Configs_HUB.Cor_Text,
+TextScaled = true,
+Text = "-"
+})
+
+local show, isBusy = true, false
+
+info_C.MouseButton1Click:Connect(function()
+if isBusy then return end
+isBusy = true
+if show then
+local c1 = TweenService:Create(info_T, TweenInfo.new(1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+TextTransparency = 1
+})
+c1:Play()
+c1.Completed:Wait()
+info_T.Visible = false
+info_TC.Visible = true
+local c_1 = TweenService:Create(info_TC, TweenInfo.new(1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+TextTransparency = 0
+})
+c_1:Play()
+info_C.Text = "×"
+else
+local c2 = TweenService:Create(info_TC, TweenInfo.new(1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+TextTransparency = 1
+})
+c2:Play()
+c2.Completed:Wait()
+info_TC.Visible = false
+info_T.Visible = true
+local c_2 = TweenService:Create(info_T, TweenInfo.new(1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+TextTransparency = 0
+})
+c_2:Play()
+info_C.Text = "-"
+end
+show = not show
+isBusy = false
+end)
+
+local Textdescpn = Create("TextLabel", description, {
+Size = UDim2.new(1, 0, 0.1, 0),
+Position = UDim2.new(0, 0, 0, 0),
+Text = "Menu Description",
+TextColor3 = Configs_HUB.Cor_Text,
+Font = Configs_HUB.Text_Font,
+BackgroundColor3 = Configs_HUB.Cor_Hub,
+BackgroundTransparency = 1
+})TextSetColor(Textdescpn)
+
+local lined = Create("Frame", description, {
+Size = UDim2.new(1, 0, 0.005, 0),
+Position = UDim2.new(0, 0, 0.1, 0),
+BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+BorderSizePixel = 0
+})
+
+local descriptionframe = Create("ScrollingFrame", description, {
+Size = UDim2.new(0.87, 0, 0.87, 0),
+Position = UDim2.new(0.07, 0, 0.115, 0),
+AutomaticCanvasSize = Enum.AutomaticSize.X,
+ScrollingDirection = Enum.ScrollingDirection.X,
+ScrollBarThickness = 0,
+BackgroundColor3 = Configs_HUB.Cor_Hub,
+BackgroundTransparency = 1
+})local descriptionframelistLayout = Create("UIListLayout", descriptionframe, {
+Padding = UDim.new(0, 5),
+FillDirection = Enum.FillDirection.Horizontal,
+SortOrder = Enum.SortOrder.LayoutOrder
+})
+
+local info_group = Create("Frame", frameinfogui, {
+Size = UDim2.new(0.28, 0, 0.37, 0),
+Position = UDim2.new(0.725, 0, 0.2 - 1, 0),
+AnchorPoint = Vector2.new(0.04, 0.21),
+BackgroundColor3 = Color3.fromRGB(0, 0, 0),
+BackgroundTransparency = 0.5,
+Visible = false
+})Corner(info_group)Stroke(info_group)
+
+local info_group_T = Create("TextLabel", info_group, {
+Size = UDim2.new(1, 0, 0.1, 0),
+Position = UDim2.new(0, 0, 0, 0),
+Text = "List All Groups that you joiner",
+TextColor3 = Configs_HUB.Cor_Text,
+Font = Configs_HUB.Text_Font,
+BackgroundColor3 = Configs_HUB.Cor_Hub,
+BackgroundTransparency = 1
+})TextSetColor(info_group_T)
+
+local line_g = Create("Frame", info_group, {
+Size = UDim2.new(1, 0, 0.005, 0),
+Position = UDim2.new(0, 0, 0.1, 0),
+BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+BorderSizePixel = 0
+})
+
+local List_group = Create("ScrollingFrame", info_group, {
+Size = UDim2.new(1, 0, 0.89, 0),
+Position = UDim2.new(0, 0, 0.11, 0),
+AutomaticCanvasSize = Enum.AutomaticSize.Y,
+ScrollingDirection = Enum.ScrollingDirection.Y,
+ScrollBarThickness = 0,
+BackgroundColor3 = Configs_HUB.Cor_Hub,
+BackgroundTransparency = 1
+})local List_grouplistLayout = Create("UIListLayout", List_group, {
+Padding = UDim.new(0, 5),
+FillDirection = Enum.FillDirection.Vertical,
+SortOrder = Enum.SortOrder.LayoutOrder
+})
+
+functions.UpdateDescription = function(params)
+local c_1 = params.fromFrame
+local c_2 = params.Text
+local c_3 = params.description
+local c_4 = params.image
+local c_5 = params.textwrapped or false
+local c_6 = params.textscaled or false
+local c_7 = params.size or 8
+local c_8 = frameRefs[c_1]
+local c_9 = metaRefs[c_1]
+if c_9 and c_9.Text == c_2 and c_9.Description == c_3 and c_9.Image == c_4 then
+return
+end
+if c_8 and c_8.Parent then
+c_8:Destroy()
+end
+local c_10 = Create("Frame", descriptionframe, {
+Size = UDim2.new(0.8, 0, 0.4, 0),
+BackgroundColor3 = Color3.fromRGB(0, 0, 0),
+BackgroundTransparency = 0.5
+})
+local c_11 = Create("TextLabel", c_10, {
+Size = UDim2.new(0.88, 0, 0.1, 0),
+Position = UDim2.new(0.12, 0, 0.03, 0),
+Text = c_2 or "",
+TextColor3 = Configs_HUB.Cor_Text,
+Font = Configs_HUB.Text_Font,
+BackgroundColor3 = Configs_HUB.Cor_Hub,
+BackgroundTransparency = 1
+})TextSetColor(c_11)
+local c_12 = Create("TextLabel", c_10, {
+Size = UDim2.new(1, 0, 0.84, 0),
+Position = UDim2.new(0, 0, 0.16, 0),
+Text = c_3 or "",
+TextColor3 = Configs_HUB.Cor_Text,
+Font = Configs_HUB.Text_Font,
+BackgroundColor3 = Configs_HUB.Cor_Hub,
+BackgroundTransparency = 1,
+TextWrapped = c_5,
+TextScaled = c_6,
+TextSize = c_7,
+TextXAlignment = Enum.TextXAlignment.Left,
+TextYAlignment = Enum.TextYAlignment.Top
+})TextSetColor(c_12)
+Create("Frame", c_10, {
+Size = UDim2.new(1, 0, 0.005, 0),
+Position = UDim2.new(0, 0, 0.16, 0),
+BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+BorderSizePixel = 0
+})
+Create("ImageLabel", c_10, {
+Size = UDim2.new(0.11, 0, 0.16, 0),
+Position = UDim2.new(0, 0, 0, 0),
+AnchorPoint = Vector2.new(0.05, 0.06),
+BackgroundColor3 = Configs_HUB.Cor_Hub,
+BackgroundTransparency = 1,
+Image = c_4 or ""
+})
+frameRefs[c_1] = c_10
+metaRefs[c_1] = {
+Text = c_2,
+Description = c_3,
+Image = c_4
+}
+end
+
+functions.getplayerdescription = function(userId)
+local zx_Desc = ddesug[userId]
+local desc = ""
+local success, response = pcall(function()
+return game:HttpGet("https://users.roblox.com/v1/users/" .. userId)
+end)
+if success then
+local data = HttpService:JSONDecode(response)
+desc = data.description or ""
+if desc == "" then
+if userId == game.Players.LocalPlayer.UserId then
+desc = "No description set for your account."
+else
+desc = "User has no description."
+end
+end
+if zx_Desc == desc then
+return zx_Desc
+else
+ddesug[userId] = desc
+return desc
+end
+else
+return zx_Desc or "Failed to load description"
+end
+end
+
+functions.getGameDesc = function(_id)
+local cachedDesc = _XyZ[_id]
+local success, productInfo = pcall(function()
+return game:GetService("MarketplaceService"):GetProductInfo(_id)
+end)
+if success and productInfo then
+local desc = productInfo.Description or "This game has no description"
+if cachedDesc == desc then
+return cachedDesc
+else
+_XyZ[_id] = desc
+return desc
+end
+else
+return cachedDesc or "Failed to load game description"
+end
+end
+
+functions.startUpdating = function()
+functions.__ = (functions.__ or 0) + 1
+local _a = game:GetService("Players").LocalPlayer.AccountAge
+local _b = _a * 86400 + functions.__
+local _c = math.floor(_b / 31536000)
+_b = _b % 31536000
+local _d = math.floor(_b / 2592000)
+_b = _b % 2592000
+local _e = math.floor(_b / 86400)
+local _f = string.format("%d years, %d months, %d days", _c, _d, _e)
+local _g = _a == 0 and "You just created an account"
+or string.format("Your account has been active for %d days", _a)
+AccountAge.Text = "Total Playtime since account creation: " .. _f .. "\n" .. _g
+end
+
+functions.startUpdating()
+
+local jt = os.time()
+
+functions.updatePlaytime = function()
+local now = os.time()
+local pt = now - jt
+local m = 60
+local h = 3600
+local d = 86400
+local mo = 2592000
+local y = 31536000
+local ft = ""
+if pt < m then
+ft = string.format("%02d", pt)
+elseif pt < h then
+ft = string.format("%d:%02d", math.floor(pt / m), pt % m)
+elseif pt < d then
+ft = string.format("%d:%02d:%02d", math.floor(pt / h), math.floor((pt % h) / m), pt % m)
+elseif pt < mo then
+ft = string.format("%d:%02d:%02d:%02d", math.floor(pt / d), math.floor((pt % d) / h), math.floor((pt % h) / m), pt % m)
+elseif pt < y then
+ft = string.format("%d:%02d:%02d:%02d:%02d", math.floor(pt / mo), math.floor((pt % mo) / d), math.floor((pt % d) / h), math.floor((pt % h) / m), pt % m)
+else
+ft = string.format("%d:%02d:%02d:%02d:%02d:%02d", math.floor(pt / y), math.floor((pt % y) / mo), math.floor((pt % mo) / d), math.floor((pt % d) / h), math.floor((pt % h) / m), pt % m)
+end
+TimePlay.Text = "Time Play: " .. ft .. "\nThis shows how long you've been playing"
+end
+
+functions.updatePlaytime()
+
+functions.getAccountCreationDate = function(ageInDays)
+local age = os.date("*t", os.time() - (ageInDays * 86400))
+return string.format("%02d/%02d/%d", age.month, age.day, age.year)
+end
+
+local thaiDays = {
+"อาทิตย์", "จันทร์", "อังคาร", "พุธ", "พฤหัสบดี", "ศุกร์", "เสาร์"
+}local thaiMonths = {
+"มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน",
+"กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"
+}functions.updateTime = function()
+local currentTime = os.date("*t")
+local hour = currentTime.hour
+local min = currentTime.min
+local sec = currentTime.sec
+local formattedTime, formattedDate
+
+if TimeThai then
+local displayHour, period, position
+
+if hour == 0 then
+displayHour = 12
+period = "เที่ยงคืน"
+position = "front"
+elseif hour >= 1 and hour <= 5 then
+displayHour = hour
+period = "ตี"
+position = "front"
+elseif hour == 6 then
+displayHour = 6
+period = "โมงเช้า"
+position = "back"
+elseif hour >= 7 and hour <= 10 then
+displayHour = hour
+period = "โมงเช้า"
+position = "back"
+elseif hour == 11 then
+displayHour = 11
+period = "โมง"
+position = "back"
+elseif hour == 12 then
+displayHour = 12
+period = "เที่ยง"
+position = "front"
+elseif hour >= 13 and hour <= 15 then
+displayHour = hour - 12
+period = "บ่าย"
+position = "front"
+elseif hour >= 16 and hour <= 18 then
+displayHour = hour - 12
+period = "โมงเย็น"
+position = "back"
+elseif hour >= 19 and hour <= 23 then
+displayHour = hour - 18
+period = "ทุ่ม"
+position = "back"
+end
+if position == "front" then
+formattedTime = string.format("%s %d:%02d:%02d", period, displayHour, min, sec)
+elseif position == "back" then
+formattedTime = string.format("%d:%02d:%02d %s", displayHour, min, sec, period)
+else
+formattedTime = string.format("%d:%02d:%02d", displayHour, min, sec)
+end
+local thaiDay = thaiDays[currentTime.wday] or ""
+local thaiMonth = thaiMonths[currentTime.month]
+local buddhistYear = currentTime.year + 543
+formattedDate = string.format("วัน%sที่%d เดือน %s ปี %d", thaiDay, currentTime.day, thaiMonth, buddhistYear)
+else
+local amPm = "AM"
+local displayHour = hour
+if hour >= 12 then
+amPm = "PM"
+if hour > 12 then
+displayHour = hour - 12
+end
+elseif hour == 0 then
+displayHour = 12
+end
+formattedTime = string.format("%02d:%02d:%02d %s", displayHour, min, sec, amPm)
+formattedDate = os.date("%b:%d:%Y")
+end
+TimeLabelgui.Text = formattedTime .. "\n" .. formattedDate
+end
+
+functions.updateTime()
+
+local infoToggleButton = Create("ImageButton", frame, {
+Size = UDim2.new(0.06, 0, 0.6, 0),
+Position = UDim2.new(0.22 + 0.1, 0, 0.22, 0),
+BackgroundColor3 = Color3.fromRGB(4, 175, 236),
+ZIndex = 10,
+BackgroundTransparency = 1,
+Image = "rbxthumb://type=Asset&id=101525904089827&w=150&h=150",
+})
+
+local Button = Create("ImageButton", frame, {
+Size = UDim2.new(0.06, 0, 0.6, 0),
+ZIndex = 10,
+BackgroundColor3 = Color3.fromRGB(0, 0, 0),
+BackgroundTransparency = 1,
+Position = UDim2.new(0.22, 0, 0.22, 0),
+Image = image
+})
+
+if corner then Corner(Button) end
+if stroke then Stroke(Button, {Color = strokecolor}) end
+
+local frameSetting = Create("Frame", ScreenGui, {
+Size = UDim2.new(0.35, 0, 0.8, 0),
+Position = UDim2.new(0.5, 0, 0.4, 0),
+AnchorPoint = Vector2.new(0.52, 0.4),
+BackgroundColor3 = Configs_HUB.Cor_Hub,
+Visible = false
+})
+

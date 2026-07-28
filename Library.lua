@@ -2574,3 +2574,576 @@ BackgroundColor3 = Configs_HUB.Cor_Hub,
 Visible = false
 })
 
+local Text7 = Create("TextLabel", frameSetting, {
+Size = UDim2.new(1, 0, 0.15, 0),
+TextColor3 = Color3.fromRGB(255, 255, 255),
+TextScaled = true,
+Text = "Setting Menu"
+})
+TextSetColor(Text7)
+
+local scrollingSettingFrame = Create("ScrollingFrame", frameSetting, {
+Size = UDim2.new(1, 0, 0.85, 0),
+Position = UDim2.new(0, 0, 0.15, 0),
+CanvasSize = UDim2.new(0, 0, 0, 0),
+ScrollingDirection = Enum.ScrollingDirection.Y,
+AutomaticCanvasSize = Enum.AutomaticSize.Y,
+BackgroundTransparency = 1,
+ScrollBarThickness = 0
+})Create("UIListLayout", scrollingSettingFrame, {
+Padding = UDim.new(0, 10),
+SortOrder = Enum.SortOrder.LayoutOrder,
+})Create("UIPadding", scrollingSettingFrame, {
+PaddingLeft = UDim.new(0.028, 0),
+PaddingTop = UDim.new(0.003, 0),
+PaddingBottom = UDim.new(0.003, 0)
+})
+
+functions.createSettingSection(scrollingSettingFrame, "Time Thailand",
+[[click this bar to switch the time display between Thai and server format
+(กดเพื่อสลับการแสดงเวลาระหว่างแบบไทยกับแบบเซิร์ฟเวอร์)
+]], function(state)
+TimeThai = state
+end, frameinfopy)
+
+local Anticopy1 = false
+local funcs = {"setclipboard", "toclipboard", "set_clipboard"}
+local backups, origSet = {}, Clipboard and Clipboard.set
+for _, f in ipairs(funcs) do backups[f] = getgenv()[f] end
+functions.createSettingSection(scrollingSettingFrame,
+"Anti Copy", [[This script will prevent you from copying using "toclipboard" and "setclipboard" to copy. It will notify you on the screen. If you feel annoyed, you can turn it off]],
+function()
+Anticopy1 = not Anticopy1
+local handler = Anticopy1 and function(d)
+notify({Title = "Attempted to copy", Text = tostring(d), buttonText = "ok", imageID = "", guiSize = Vector2.new(400, 70)})
+end
+for _, f in ipairs(funcs) do getgenv()[f] = handler or backups[f] end
+if Clipboard then Clipboard.set = handler or origSet end
+end, copyEnabled)
+
+functions.createSettingSection(scrollingSettingFrame, "Show frame info players",
+[[Displays a frame with the player's image, username, and User ID when ShiftLock is active. Player info appears when you center the ShiftLock icon over a player or point the Icon to that player]], function(state)
+frameinfopy = state
+end, frameinfopy)
+
+local hasSaved = false
+local savedLightingProperties = nil
+local savedLightingChildren = nil
+local rainParts = {}
+local rainSound = nil
+local Lighting = game:GetService("Lighting")
+rainSound = Create("Sound", ScreenGui, {
+SoundId = "rbxassetid://1516791621",
+Volume = 0.5,
+Looped = true
+})
+
+function functions.SaveEnvironment()
+if not hasSaved then
+hasSaved = true
+savedLightingProperties = {
+ClockTime = Lighting.ClockTime,
+Ambient = Lighting.Ambient,
+Brightness = Lighting.Brightness,
+ColorShift_Bottom = Lighting.ColorShift_Bottom,
+ColorShift_Top = Lighting.ColorShift_Top,
+EnvironmentDiffuseScale = Lighting.EnvironmentDiffuseScale,
+EnvironmentSpecularScale = Lighting.EnvironmentSpecularScale,
+GlobalShadows = Lighting.GlobalShadows,
+OutdoorAmbient = Lighting.OutdoorAmbient,
+ShadowSoftness = Lighting.ShadowSoftness,
+GeographicLatitude = Lighting.GeographicLatitude,
+ExposureCompensation = Lighting.ExposureCompensation,
+}
+savedLightingChildren = {}
+for _, child in pairs(Lighting:GetChildren()) do
+table.insert(savedLightingChildren, child:Clone())
+end
+end
+end
+
+function functions.RestoreEnvironment()
+for _, v in pairs(Lighting:GetChildren()) do
+v:Destroy()
+end
+
+if savedLightingChildren then
+for _, child in pairs(savedLightingChildren) do
+child.Parent = Lighting
+end
+end
+
+if savedLightingProperties then
+Lighting.ClockTime = savedLightingProperties.ClockTime
+Lighting.Ambient = savedLightingProperties.Ambient
+Lighting.Brightness = savedLightingProperties.Brightness
+Lighting.ColorShift_Bottom = savedLightingProperties.ColorShift_Bottom
+Lighting.ColorShift_Top = savedLightingProperties.ColorShift_Top
+Lighting.EnvironmentDiffuseScale = savedLightingProperties.EnvironmentDiffuseScale
+Lighting.EnvironmentSpecularScale = savedLightingProperties.EnvironmentSpecularScale
+Lighting.GlobalShadows = savedLightingProperties.GlobalShadows
+Lighting.OutdoorAmbient = savedLightingProperties.OutdoorAmbient
+Lighting.ShadowSoftness = savedLightingProperties.ShadowSoftness
+Lighting.GeographicLatitude = savedLightingProperties.GeographicLatitude
+Lighting.ExposureCompensation = savedLightingProperties.ExposureCompensation
+end
+
+if rainParts then
+for _, part in pairs(rainParts) do
+if part and part.Parent then
+part:Destroy()
+end
+end
+rainParts = {}
+end
+
+hasSaved = false
+end
+
+functions.createSettingSection(scrollingSettingFrame, "Rain🌧",
+[[This will make the clouds in the sky look like it's raining and there's the sound of rain, but now there's no rain. There's just the sound and changing the sky. For games that have already been entered and you try using this script and the sky doesn't change, it's still the same sky as it was in the game. That means that the game is protected]],
+function(isLightingEnabled)
+if isLightingEnabled then
+functions.SaveEnvironment()
+Lighting.ClockTime = 12
+for _, v in pairs(Lighting:GetChildren()) do
+v:Destroy()
+end
+local Bloom = Create("BloomEffect", Lighting, {Intensity = 0.1, Size = 20, Threshold = 0.5})
+local Blur = Create("BlurEffect", Lighting, {Size = 5})
+local ColorCor = Create("ColorCorrectionEffect", Lighting, {
+Brightness = -0.2,
+Contrast = 0.1,
+Saturation = 0.0,
+TintColor = Color3.fromRGB(150, 150, 150)
+})
+local SunRays = Create("SunRaysEffect", Lighting, {Intensity = 0.0, Spread = 0.6})
+local Sky = Create("Sky", Lighting, {
+SkyboxBk = "rbxassetid://4498828382",
+SkyboxDn = "rbxassetid://4498828812",
+SkyboxFt = "rbxassetid://4498829917",
+SkyboxLf = "rbxassetid://4498830911",
+SkyboxRt = "rbxassetid://4498830417",
+SkyboxUp = "rbxassetid://4498831746",
+SunAngularSize = 30
+})
+local Atm = Create("Atmosphere", Lighting, {
+Density = 0.6,
+Offset = 0.1,
+Color = Color3.fromRGB(150, 150, 150),
+Decay = Color3.fromRGB(150, 150, 150),
+Glare = 0.5,
+Haze = 1
+})
+rainSound:Play()
+
+local minX, maxX = -2000, 2000
+local minZ, maxZ = -2000, 2000
+local height = 400
+local numRaindrops = 3000
+for i = 1, numRaindrops do
+local parentPart = Create("Part", workspace, {
+Size = Vector3.new(7, 7, 7),
+Position = Vector3.new(math.random(minX, maxX), height, math.random(minZ, maxZ)),
+Transparency = 1,
+Anchored = true
+})
+
+local particleEmitter = Create("ParticleEmitter", parentPart, {
+Speed = NumberRange.new(10, 13),
+Lifetime = NumberRange.new(2, 6),
+Rate = 10000,
+Size = NumberSequence.new(1),
+Transparency = NumberSequence.new(0.4),
+Color = ColorSequence.new(Color3.fromRGB(255, 255, 255)),
+LightEmission = 10,
+RotSpeed = NumberRange.new(50, 100),
+VelocityInheritance = 0,
+Acceleration = Vector3.new(0, -160, 0),
+SpreadAngle = Vector2.new(300, 300)
+})
+
+table.insert(rainParts, parentPart)
+end
+Lighting.Ambient = Color3.fromRGB(200, 200, 200)
+Lighting.Brightness = 2.5
+Lighting.ColorShift_Bottom = Color3.fromRGB(150, 150, 150)
+Lighting.ColorShift_Top = Color3.fromRGB(150, 150, 150)
+Lighting.EnvironmentDiffuseScale = 0.1
+Lighting.EnvironmentSpecularScale = 0.1
+Lighting.GlobalShadows = true
+Lighting.OutdoorAmbient = Color3.fromRGB(10, 10, 10)
+Lighting.ShadowSoftness = 0.5
+Lighting.GeographicLatitude = 45
+Lighting.ExposureCompensation = 0.6
+else
+rainSound:Pause()
+functions.RestoreEnvironment()
+end
+end,
+isLightingEnabled)
+
+local togglehideName = false
+local connectionhideName = {}
+
+function functions.toggleHideName(state)
+togglehideName = state
+if state then
+player = game.Players.LocalPlayer
+if player.Character then
+for _, gui in ipairs(player.Character:GetDescendants()) do
+if gui:IsA("BillboardGui") or gui:IsA("SurfaceGui") then
+gui.Enabled = not togglehideName
+end
+end
+descConn = player.Character.DescendantAdded:Connect(function(gui)
+if gui:IsA("BillboardGui") or gui:IsA("SurfaceGui") then
+gui.Enabled = not togglehideName
+end
+end)
+table.insert(connectionhideName, descConn)
+end
+charAddedConn = player.CharacterAdded:Connect(function(character)
+for _, gui in ipairs(character:GetDescendants()) do
+if gui:IsA("BillboardGui") or gui:IsA("SurfaceGui") then
+gui.Enabled = not togglehideName
+end
+end
+local descConn = character.DescendantAdded:Connect(function(gui)
+if gui:IsA("BillboardGui") or gui:IsA("SurfaceGui") then
+gui.Enabled = not togglehideName
+end
+end)
+table.insert(connectionhideName, descConn)
+end)
+table.insert(connectionhideName, charAddedConn)
+else
+for _, conn in ipairs(connectionhideName) do
+conn:Disconnect()
+end
+connectionhideName = {}
+player = game.Players.LocalPlayer
+if player.Character then
+for _, gui in ipairs(player.Character:GetDescendants()) do
+if gui:IsA("BillboardGui") or gui:IsA("SurfaceGui") then
+gui.Enabled = not togglehideName
+end
+end
+end
+end
+end
+
+functions.createSettingSection(
+scrollingSettingFrame,
+"Hide Name",
+[[This script will hide "BillboardGui" and "SurfaceGui" for games that use these 2 to create "NameTag"]],
+functions.toggleHideName, false)
+
+local TopBarclose = false
+functions.createSettingSection(
+scrollingSettingFrame,
+"Top Bar Roblox",
+"It's something you frequently use to exit the game and chat with others in-game",
+function()
+local topBarApp = game:GetService("CoreGui"):FindFirstChild("TopBarApp")
+local topBarInner = topBarApp and topBarApp:FindFirstChild("TopBarApp")
+local unibar = topBarInner and topBarInner:FindFirstChild("UnibarLeftFrame")
+local menu = topBarInner and topBarInner:FindFirstChild("MenuIconHolder")
+if unibar and menu then
+TopBarclose = not unibar.Visible
+unibar.Visible = TopBarclose
+menu.Visible = TopBarclose
+end
+end, TopBarclose)
+
+local gameSettings = UserSettings():GetService("UserGameSettings")
+local lastKnownVolume = gameSettings.MasterVolume
+local changeConnection
+functions.createSettingSection(scrollingSettingFrame, "Volume",
+[[Turn off your main game sound]], function()
+local currentVolume = gameSettings.MasterVolume
+gameSettings.MasterVolume = (currentVolume > 0) and 0 or 1
+end)
+functions.createSettingSection(scrollingSettingFrame, "Volume Notifications",
+[[Notification for changes in MasterVolume from other sources. If you feel annoyed, you can turn it off.]], function(state)
+if state then
+if not changeConnection then
+changeConnection = RunService.Heartbeat:Connect(function()
+local currentVolume = gameSettings.MasterVolume
+if currentVolume ~= lastKnownVolume then
+game.StarterGui:SetCore("SendNotification", {
+Title = "Volume Changed",
+Text = "Volume has been changed to: " .. tostring(currentVolume),
+Icon = "rbxthumb://type=Asset&id=92416463477961&w=150&h=150",
+Duration = 3,
+})
+lastKnownVolume = currentVolume
+end
+end)
+end
+else
+if changeConnection then
+changeConnection:Disconnect()
+changeConnection = nil
+end
+end
+end)
+
+local SettingButton = Create("ImageButton", frame, {
+Size = UDim2.new(0.06, 0, 0.6, 0),
+ZIndex = 10,
+BackgroundColor3 = Color3.fromRGB(0, 0, 0),
+BackgroundTransparency = 1,
+Position = UDim2.new(0.92, 0, 0.22, 0),
+Image = "rbxthumb://type=Asset&id=130250170804726&w=150&h=150"
+})
+
+if corner then Corner(SettingButton) end
+if stroke then Stroke(SettingButton, {Color = strokecolor}) end
+
+local States = {
+Off = "rbxasset://textures/ui/mouseLock_off@2x.png",
+On = "rbxasset://textures/ui/mouseLock_on@2x.png",
+Lock = "rbxasset://textures/MouseLockedCursor.png",
+Lock2 = "rbxasset://SystemCursors/Cross"
+}
+local ContextActionService, MaxLength, ENABLED_OFFSET, DISABLED_OFFSET, ShiftLockmaingui, gig, CH, Tweening = game:GetService("ContextActionService"), 900000, CFrame.new(1.9, 0, 0), CFrame.new(-1.9, 0, 0), nil, nil, {}, false
+local ShiftLockButton = Create("ImageButton", frame, {
+BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+BackgroundTransparency = 1.000,
+Position = UDim2.new(0.22 + 0.4, 0, 0.22, 0),
+Size = UDim2.new(0.06, 0, 0.6, 0),
+ZIndex = 10,
+Image = States.Off
+})
+
+local ShiftlockCursor = Create("ImageLabel", ScreenGui, {
+Image = States.Lock,
+Size = UDim2.new(0.025, 0, 0.025, 0),
+Position = UDim2.new(0.5, 0, 0.5, 0),
+AnchorPoint = Vector2.new(0.5, 0.5),
+SizeConstraint = Enum.SizeConstraint.RelativeXX,
+BackgroundTransparency = 1,
+BackgroundColor3 = Color3.fromRGB(255, 0, 0),
+Visible = false
+})
+
+local frameinfoplayer = Create("Frame", ScreenGui, {
+Size = UDim2.new(0.24, 0, 0.1, 0),
+Position = UDim2.new(0.2, 0, 0.03, 0),
+BackgroundColor3 = Configs_HUB.Cor_Hub,
+BackgroundTransparency = 0.8,
+Visible = false
+})Corner(frameinfoplayer)Stroke(frameinfoplayer)
+
+local DisplayNameplayers = Create("TextLabel", frameinfoplayer, {
+Size = UDim2.new(0.77, 0, 0.35, 0),
+Position = UDim2.new(0.23, 0, 0, 0),
+Text = "nil",
+TextXAlignment = "Left",
+BackgroundTransparency = 1,
+TextColor3 = Configs_HUB.Cor_Text,
+Font = Configs_HUB.Text_Font,
+TextScaled = true,
+Visible = false
+})
+
+local Nameplayers = Create("TextLabel", frameinfoplayer, {
+Size = UDim2.new(0.77, 0, 0.3, 0),
+Position = UDim2.new(0.23, 0, 0.35, 0),
+Text = "@nil",
+TextXAlignment = "Left",
+BackgroundTransparency = 1,
+TextColor3 = Color3.fromRGB(114, 117, 130),
+Font = Configs_HUB.Text_Font,
+TextScaled = true,
+Visible = false
+})
+
+local useridplayers = Create("TextLabel", frameinfoplayer, {
+Size = UDim2.new(0.77, 0, 0.3, 0),
+Position = UDim2.new(0.23, 0, 0.65, 0),
+Text = "id:nil",
+TextXAlignment = "Left",
+BackgroundTransparency = 1,
+TextColor3 = Color3.fromRGB(152, 194, 219),
+Font = Configs_HUB.Text_Font,
+TextScaled = true,
+Visible = false
+})
+
+local noplayers = Create("TextLabel", frameinfoplayer, {
+Size = UDim2.new(0.77, 0, 1, 0),
+Position = UDim2.new(0.23, 0, 0, 0),
+Text = "Server No Player",
+TextXAlignment = "Left",
+BackgroundTransparency = 1,
+TextColor3 = Configs_HUB.Cor_Text,
+Font = Configs_HUB.Text_Font,
+TextScaled = true,
+Visible = false
+})
+
+local imageplayers = Create("ImageLabel", frameinfoplayer, {
+Size = UDim2.new(0.195, 0, 0.95, 0),
+Position = UDim2.new(0.005, 0, 0.015, 0),
+BackgroundTransparency = 1,
+Image = "rbxthumb://type=Asset&id=100283719478427&w=150&h=150"
+})Corner(imageplayers, {CornerRadius = UDim.new(1, 0)})Stroke(imageplayers, {Color = Color3.fromRGB(255, 255, 255)})
+local buttonCooldown, Click, ifClick, specialClicks = 0.5, 0, false, {}
+functions.canClick = function(buttonName)
+local Time = tick()
+if buttonName then
+if not specialClicks[buttonName] or Time - specialClicks[buttonName] >= buttonCooldown then
+specialClicks[buttonName] = Time
+return true
+end
+return false
+else
+if Time - Click >= buttonCooldown and not ifClick then
+Click = Time
+ifClick = true
+delay(buttonCooldown, function()
+ifClick = false
+end)
+return true
+end
+return false
+end
+end
+functions.Look = function()
+local mousePos = ShiftlockCursor.AbsolutePosition + (ShiftlockCursor.AbsoluteSize / 2)
+local unitRay = workspace.CurrentCamera:ViewportPointToRay(mousePos.X, mousePos.Y)
+return unitRay.Origin + unitRay.Direction * 100
+end
+
+ShiftLockButton.MouseButton1Click:Connect(function()
+if not functions.canClick("Free ShiftLock") or Tweening then return end
+Tweening = true
+if not ShiftLockmaingui then
+ShiftLockmaingui = RunService.RenderStepped:Connect(function()
+local zx_char = Player.Character or Player.CharacterAdded:Wait()
+if not zx_char then return end
+local zx_root = zx_char:FindFirstChild("HumanoidRootPart")
+local zx_hum = zx_char:FindFirstChildOfClass("Humanoid")
+local zx_cam = workspace.CurrentCamera
+if not (zx_root and zx_hum and zx_cam) then return end
+zx_hum.AutoRotate = false
+ShiftLockButton.Image = States.On
+ShiftlockCursor.Visible = true
+local zx_look = functions.Look()
+local zx_pos = zx_root.Position
+zx_look = Vector3.new(zx_look.X, zx_pos.Y, zx_look.Z)
+zx_root.CFrame = CFrame.new(zx_pos, zx_look)
+zx_cam.CFrame *= ENABLED_OFFSET
+zx_cam.Focus = CFrame.fromMatrix(zx_cam.Focus.Position, zx_cam.CFrame.RightVector, zx_cam.CFrame.UpVector) * ENABLED_OFFSET
+local zx_players = game:GetService("Players")
+local zx_local = zx_players.LocalPlayer
+local zx_all = zx_players:GetPlayers()
+local zx_cam_pos = zx_cam.CFrame.Position
+if #zx_all == 1 and zx_local.Name == zx_all[1].Name then
+DisplayNameplayers.Visible = false
+Nameplayers.Visible = false
+useridplayers.Visible = false
+for _, zx_hi in pairs(CH) do
+if zx_hi then zx_hi:Destroy() end
+end
+CH = {}
+imageplayers.Image = "rbxthumb://type=Asset&id=100283719478427&w=150&h=150"
+noplayers.Visible = true
+Tweening = false
+return
+else
+DisplayNameplayers.Visible = true
+Nameplayers.Visible = true
+useridplayers.Visible = true
+noplayers.Visible = false
+end
+local zx_ctr = ShiftlockCursor.AbsolutePosition + (ShiftlockCursor.AbsoluteSize / 2)
+local zx_sz = ShiftlockCursor.AbsoluteSize
+local zx_near, zx_dist = nil, math.huge
+local zx_dir = zx_cam.CFrame.LookVector
+local zx_cyu = {}
+for _, zx_plr in pairs(zx_all) do
+if zx_plr ~= zx_local and zx_plr.Character then
+local zx_root_other = zx_plr.Character:FindFirstChild("HumanoidRootPart")
+if zx_root_other then
+local zx_scrPos, zx_onScr = zx_cam:WorldToScreenPoint(zx_root_other.Position)
+if zx_onScr then
+local zx_inX = zx_scrPos.X >= zx_ctr.X - zx_sz.X/2 and zx_scrPos.X <= zx_ctr.X + zx_sz.X/2
+local zx_inY = zx_scrPos.Y >= zx_ctr.Y - zx_sz.Y/2 and zx_scrPos.Y <= zx_ctr.Y + zx_sz.Y/2
+if zx_inX and zx_inY then
+local to_target = zx_root_other.Position - zx_cam_pos
+local forward_dist = to_target:Dot(zx_dir)
+if forward_dist > 0 then
+local dist2d = (Vector2.new(zx_scrPos.X, zx_scrPos.Y) - zx_ctr).Magnitude
+table.insert(zx_cyu, {
+player = zx_plr,
+dist2d = dist2d,
+forward_dist = forward_dist
+})
+end
+end
+end
+end
+end
+end
+table.sort(zx_cyu, function(a, b)
+if math.abs(a.forward_dist - b.forward_dist) > 0.1 then
+return a.forward_dist < b.forward_dist
+else
+return a.dist2d < b.dist2d
+end
+end)
+local zx_near = zx_cyu[1] and zx_cyu[1].player or nil
+if frameinfopy then
+for _, zx_hi in pairs(CH) do
+if zx_hi then zx_hi:Destroy() end
+end
+CH = {}
+end
+if zx_near then
+DisplayNameplayers.Text = zx_near.DisplayName
+Nameplayers.Text = "@" .. zx_near.Name
+useridplayers.Text = "id:" .. zx_near.UserId
+imageplayers.Image = "http://www.roblox.com/Thumbs/Avatar.ashx?x=500&y=500&Format=Png&userId=" .. zx_near.UserId
+if not CH[zx_near] and frameinfopy then
+local zx_hi = Create("Highlight", zx_near.Character, {
+Name = "PlayerHighlight",
+Adornee = zx_near.Character or zx_near.Character:FindFirstChild("HumanoidRootPart") or zx_near.Character:FindFirstChildWhichIsA("BasePart"),
+FillTransparency = 1,
+OutlineTransparency = 0,
+DepthMode = Enum.HighlightDepthMode.AlwaysOnTop,
+OutlineColor = Color3.fromRGB(0, 0, 255)
+})
+CH[zx_near] = zx_hi
+end
+else
+DisplayNameplayers.Text = "nil"
+Nameplayers.Text = "@nil"
+useridplayers.Text = "id:nil"
+imageplayers.Image = "rbxthumb://type=Asset&id=100283719478427&w=150&h=150"
+end
+Tweening = false
+end)
+else
+local zx_char = Player.Character
+if zx_char then
+local zx_hum = zx_char:FindFirstChildOfClass("Humanoid")
+if zx_hum then zx_hum.AutoRotate = true end
+end
+for _, zx_hi in pairs(CH) do
+if zx_hi then zx_hi:Destroy() end
+end
+CH = {}
+ShiftLockButton.Image = States.Off
+workspace.CurrentCamera.CFrame *= DISABLED_OFFSET
+ShiftlockCursor.Visible = false
+if ShiftLockmaingui then
+ShiftLockmaingui:Disconnect()
+ShiftLockmaingui = nil
+end
+Tweening = false
+end
+end)
+

@@ -3625,4 +3625,456 @@ Size = UDim2.new(1, 0, 1, 0),
 BackgroundTransparency = 1,
 Text = ""
 })
+local TextLabel = Create("TextLabel", Frame, {
+Size = TabImage and UDim2.new(0.85, 0, 1, 0) or UDim2.new(1, 0, 1, 0),
+Position = TabImage and UDim2.new(0.15, 0, 0, 0) or UDim2.new(0, 0, 0, 0),
+TextWrapped = true,
+BackgroundTransparency = 1,
+Font = Configs_HUB.Text_Font,
+TextColor3 = textcolor,
+TextSize = textsize,
+Text = TabName
+})
 
+if TabImage then
+local image = Create("ImageLabel", Frame, {
+Size = UDim2.new(0.15, 0, 0.8, 0),
+Position = UDim2.new(0, 0, 0.05, 0),
+BackgroundColor3 = Configs_HUB.Cor_Options,
+BackgroundTransparency = 1,
+Image = TabImage
+})
+Corner(image)
+end
+
+local Container = Create("ScrollingFrame", Containers, {
+Size = UDim2.new(1, 0, 1, 0),
+ScrollingDirection = Enum.ScrollingDirection.Y,
+BackgroundTransparency = 1,
+ScrollBarThickness = 2,
+Visible = firstVisible,
+AutomaticCanvasSize = Enum.AutomaticSize.Y
+})
+Container.Name = TabName
+local listLayoutContainer = Create("UIListLayout", Container, {
+Padding = UDim.new(0, 5),
+SortOrder = Enum.SortOrder.LayoutOrder,
+})Create("UIPadding", Container, {
+PaddingLeft = UDim.new(0.028, 0),
+PaddingTop = UDim.new(0.003, 0),
+PaddingBottom = UDim.new(0.003, 0)
+})
+
+TextButton.MouseButton1Click:Connect(function()
+for _, container in pairs(Containers:GetChildren()) do
+if container:IsA("ScrollingFrame") then
+container.Visible = false
+end
+end
+for _, frame in pairs(ScrollBar:GetChildren()) do
+if frame:IsA("Frame") then
+local frameStroke = frame:FindFirstChildOfClass("UIStroke")
+local label = frame:FindFirstChild("TextLabel")
+if label == TextLabel then
+CreateTween(frameStroke, "Color", Color3.fromRGB(255, 255, 255), 0.2, false)
+CreateTween(label, "TextColor3", Configs_HUB.Cor_Text, 0.2, false)
+if not label:GetAttribute("Clicked") then
+local percentageIncrease = 0.1
+local currentSize = label.TextSize
+local newSize = currentSize * (1 + percentageIncrease)
+label.TextSize = newSize
+if label.TextBounds.X > label.AbsoluteSize.X then
+label.TextSize = currentSize
+end
+local clickpaperSound = Create("Sound", ScreenGui, {
+SoundId = "rbxassetid://9117207262",
+Volume = 0.07
+})
+clickpaperSound:Play()
+clickpaperSound.Ended:Connect(function()
+clickpaperSound:Destroy()
+end)
+label:SetAttribute("Clicked", true)
+end
+else
+if frameStroke then
+CreateTween(frameStroke, "Color", Configs_HUB.Cor_Stroke, 0.2, false)
+end
+if label then
+local defaultSize = label.TextSize - 2
+label.TextSize = math.clamp(defaultSize, 14, 20)
+CreateTween(label, "TextColor3", Configs_HUB.Cor_DarkText, 0.3, false)
+label:SetAttribute("Clicked", false)
+end
+end
+end
+end
+Container.Visible = true
+end)
+
+if not firstTabSet then
+Container.Visible = true
+CreateTween(TextLabel, "TextColor3", Configs_HUB.Cor_Text, 0.2, false)
+CreateTween(TextLabel, "TextSize", 17, 0.2, false)
+CreateTween(FrameStroke, "Color", Color3.fromRGB(255, 255, 255), 0.2, false)
+firstTabSet = true
+end
+
+firstVisible = false
+textsize = 14
+textcolor = Configs_HUB.Cor_DarkText
+return Container
+end
+
+function AddButton(parent, Configs)
+local ButtonName = Configs.Name or "Button!!"
+local Callback = Configs.Callback or function() end
+
+local TextButton = Create("TextButton", parent, {
+Size = UDim2.new(0.95, 0, 0.1, 0),
+BackgroundColor3 = Configs_HUB.Cor_Options,
+Name = "Frame",
+Text = "",
+AutoButtonColor = false
+})Corner(TextButton)Stroke(TextButton)
+
+local TextLabel = Create("TextLabel", TextButton, {
+TextColor3 = Configs_HUB.Cor_Text,
+TextWrapped = true,
+TextSize = 12,
+Text = ButtonName,
+Size = UDim2.new(0.94, 0, 1, 0),
+Position = UDim2.new(0.06, 0, 0, 0),
+BackgroundTransparency = 1,
+TextXAlignment = "Left",
+Font = Configs_HUB.Text_Font
+})
+
+local ImageLabel = Create("ImageLabel", TextButton, {
+Image = "rbxassetid://121035659622295",
+Size = UDim2.new(0.06, 0, 1, 0),
+BackgroundTransparency = 1,
+ImageColor3 = Configs_HUB.Cor_Stroke
+})
+
+TextButton.MouseButton1Click:Connect(function()
+Callback("Click!!")
+CreateTween(ImageLabel, "ImageColor3", Color3.fromRGB(30, 140, 200), 0.2, true)
+CreateTween(ImageLabel, "ImageColor3", Configs_HUB.Cor_Stroke, 0.2, false)
+end)
+
+TextSetColor(TextLabel)
+end
+
+function AddWarningMessage(parent, Configs, StrokeColor)
+local WarningMessage = Configs.WarningMessage
+local ImageId = Configs.ImageId
+
+local WarningFrame = Create("Frame", parent, {
+Size = UDim2.new(0.95, 0, 0.17, 0),
+BackgroundColor3 = Configs_HUB.Cor_Options,
+})
+local FrameStroke = Create("UIStroke", WarningFrame, {
+Thickness = 2,
+Color = Configs_HUB.Cor_Options,
+ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+})
+local ImageLabel = Create("ImageLabel", WarningFrame, {
+Image = ImageId,
+Size = UDim2.new(0.125, 0, 1, 0),
+BackgroundTransparency = 1
+})
+local WarningLabel = Create("TextLabel", WarningFrame, {
+TextColor3 = Configs_HUB.Cor_Text,
+TextWrapped = true,
+TextSize = 12,
+Text = WarningMessage,
+Size = UDim2.new(0.875, 0, 1, 0),
+Position = UDim2.new(0.125, 0, 0, 0),
+BackgroundTransparency = 1,
+TextXAlignment = "Left",
+Font = Configs_HUB.Text_Font
+})TextSetColor(WarningLabel)
+end
+
+function AddToggle(parent, Configs)
+local ToggleName = Configs.Name or "Toggle!!"
+local Default = Configs.Default or false
+local Callback = Configs.Callback or function() end
+
+local TextButton = Create("TextButton", parent, {
+Size = UDim2.new(0.95, 0, 0.12, 0),
+BackgroundColor3 = Configs_HUB.Cor_Options,
+Name = "Frame",
+Text = "",
+AutoButtonColor = false
+})
+Corner(TextButton)
+Stroke(TextButton)
+
+local TextLabel = Create("TextLabel", TextButton, {
+TextColor3 = Configs_HUB.Cor_Text,
+TextWrapped = true,
+TextSize = 12,
+Text = ToggleName,
+Size = UDim2.new(0.93, 0, 1, 0),
+Position = UDim2.new(0.012 + 0.08, 0, 0, 0),
+BackgroundTransparency = 1,
+TextXAlignment = "Left",
+Font = Configs_HUB.Text_Font
+})
+
+local Frame1 = Create("Frame", TextButton, {
+Size = UDim2.new(0.07, 0, 0.6, 0),
+Position = UDim2.new(0.012, 0, 0.22, 0),
+BackgroundTransparency = 1,
+})
+Corner(Frame1, {CornerRadius = UDim.new(1, 0)})
+local Stroke1 = Stroke(Frame1, {Thickness = 2})
+
+local Frame2 = Create("Frame", Frame1, {
+Size = UDim2.new(0.5, 0, 0.9, 0),
+Position = UDim2.new(0, 0, 0.47, 0),
+AnchorPoint = Vector2.new(0, 0.5),
+BackgroundColor3 = Configs_HUB.Cor_Stroke
+})local Stroke2 = Stroke(Frame2, {Thickness = 1})
+Corner(Frame2, {CornerRadius = UDim.new(1, 0)})
+
+local OnOff = false
+if Default then
+OnOff = true
+CreateTween(Frame2, "Position", UDim2.new(0, 0, 0.47, 0), 0.2, false)
+CreateTween(Frame2, "BackgroundColor3", Color3.fromRGB(30, 140, 200), 0.2, false)
+CreateTween(Stroke1, "Color", Color3.fromRGB(30, 140, 200), 0.2, false)
+CreateTween(Stroke2, "Color", Color3.fromRGB(30, 140, 200), 0.2, false)
+CreateTween(TextLabel, "TextColor3", Color3.fromRGB(30, 140, 200), 0.2, false)
+end
+Callback(OnOff)
+local function ResetToggle()
+OnOff = false
+CreateTween(Frame2, "Position", UDim2.new(0, 0, 0.47, 0), 0.2, false)
+CreateTween(Frame2, "BackgroundColor3", Configs_HUB.Cor_Stroke, 0.2, false)
+CreateTween(Stroke1, "Color", Configs_HUB.Cor_Stroke, 0.2, false)
+CreateTween(Stroke2, "Color", Configs_HUB.Cor_Stroke, 0.2, false)
+CreateTween(TextLabel, "TextColor3", Configs_HUB.Cor_Text, 0.2, false)
+Callback(false)
+end
+local cleartoggle
+cleartoggle = parent.AncestryChanged:Connect(function(_, parent)
+if not parent and OnOff then
+ResetToggle()
+if cleartoggle then
+cleartoggle:Disconnect()
+cleartoggle = nil
+end
+end
+end)
+
+local function CreateEffect(text, parent)
+local EffectLabel = Create("TextLabel", parent, {
+Text = text,
+TextColor3 = Configs_HUB.Cor_Text,
+Font = Configs_HUB.Text_Font,
+BackgroundTransparency = 1,
+Size = UDim2.new(0.3, 0, 0.3, 0),
+Position = UDim2.new(0.35, 0, -0.2, 0)
+})
+local UIScale = Create("UIScale", EffectLabel, {Scale = 0.5})
+CreateTween(UIScale, "Scale", 1, 0.2, false)
+CreateTween(EffectLabel, "Position", UDim2.new(0.35, 0, -0.2, 0), 0.3, false)
+CreateTween(EffectLabel, "TextTransparency", 1, 0.5, false)
+
+task.delay(0.3, function()
+EffectLabel:Destroy()
+end)
+end
+
+TextButton.MouseButton1Click:Connect(function()
+if not OnOff then
+clicktoggle:Play()
+OnOff = true
+CreateTween(Frame2, "Position", UDim2.new(0.5, 0, 0.47, 0), 0.2, false)
+CreateTween(Frame2, "BackgroundColor3", Color3.fromRGB(30, 140, 200), 0.2, false)
+CreateTween(Stroke1, "Color", Color3.fromRGB(30, 140, 200), 0.2, false)
+CreateTween(Stroke2, "Color", Color3.fromRGB(30, 140, 200), 0.2, false)
+CreateTween(TextLabel, "TextColor3", Color3.fromRGB(30, 140, 200), 0.2, false)
+CreateEffect("ON", Frame1)
+Callback(true)
+else
+falsetoggle:Play()
+ResetToggle()
+CreateEffect("OFF", Frame1)
+end
+end)
+return {Frame2, Stroke1, OnOff, Callback}
+end
+
+function AddTextBox(parent, Configs)
+local TextBoxName = Configs.Name or "TextBox!!"
+local Default = Configs.Default or "TextBox"
+local placeholderText = Configs.PlaceholderText or "TextBox"
+local ClearText = Configs.ClearText or false
+local Callback = Configs.Callback or function() end
+
+local Frame = Create("Frame", parent, {
+Size = UDim2.new(0.95, 0, 0.1, 0),
+BackgroundColor3 = Configs_HUB.Cor_Options,
+Name = "Frame"
+})Corner(Frame)Stroke(Frame)
+
+local TextLabel = Create("TextButton", Frame, {
+TextSize = 12,
+TextColor3 = Configs_HUB.Cor_Text,
+Text = TextBoxName,
+TextWrapped = true,
+Size = UDim2.new(0.66, 0, 1, 0),
+Position = UDim2.new(0.34, 0, 0, 0),
+BackgroundTransparency = 1,
+TextXAlignment = "Left",
+Font = Configs_HUB.Text_Font
+})
+TextSetColor(TextLabel)
+
+local TextBox = Create("TextBox", Frame, {
+Size = UDim2.new(0.3, 0, 0.82, 0),
+Position = UDim2.new(0.03, 0, 0.1, 0),
+TextColor3 = Configs_HUB.Cor_Text,
+Text = Default,
+ClearTextOnFocus = ClearText,
+PlaceholderText = placeholderText,
+TextScaled = true,
+Font = Configs_HUB.Text_Font,
+BackgroundTransparency = 1
+})
+
+local Line = Create("Frame", TextBox, {
+Size = UDim2.new(1, 0, 0.07, 0),
+Position = UDim2.new(0.5, 0, 1, 0),
+AnchorPoint = Vector2.new(0.5, 0.5),
+BackgroundColor3 = Configs_HUB.Cor_Stroke,
+BorderSizePixel = 0
+})
+
+TextBox.MouseEnter:Connect(function()
+CreateTween(Line, "Size", UDim2.new(0, 0, 0.07, 0), 0.3, true)
+CreateTween(Line, "Size", UDim2.new(1, 0, 0.07, 0), 0.3, true)
+end)
+
+TextBox.FocusLost:Connect(function()
+Callback(TextBox.Text)
+end)
+end
+
+function AddColorPicker(parent, Configs)
+local name = Configs.Name or "Color Picker"
+local Default = Configs.Default or Color3.fromRGB(0, 0, 200)
+local Callback = Configs.Callback or function() end
+local ColorH, ColorS, ColorV = Default:ToHSV()
+Callback(Default)
+
+local TextButton = Create("Frame", parent, {
+Size = UDim2.new(0.95, 0, 0.1, 0),
+BackgroundColor3 = Configs_HUB.Cor_Options,
+})
+Stroke(TextButton)
+Corner(TextButton)
+
+local click = Create("TextButton", TextButton, {
+Size = UDim2.new(1, 0, 1, 0),
+BackgroundTransparency = 1,
+AutoButtonColor = false,
+Text = ""
+})
+
+local TextLabel = Create("TextLabel", TextButton, {
+Size = UDim2.new(0.89, 0, 1, 0),
+Position = UDim2.new(0.07, 0, 0, 0),
+TextSize = 12,
+TextWrapped = true,
+TextColor3 = Configs_HUB.Cor_Text,
+TextXAlignment = "Left",
+Text = name,
+Font = Configs_HUB.Text_Font,
+BackgroundTransparency = 1
+})
+
+local picker = Create("Frame", TextButton, {
+Size = UDim2.new(0.05, 0, 0.9, 0),
+Position = UDim2.new(0.01, 0, 0.05, 0),
+BackgroundColor3 = Default
+})
+Corner(picker)
+Stroke(picker)
+
+local UI_Grade = Create("ImageButton", TextButton, {
+Size = UDim2.new(0.7, 0, 0.7, 0),
+Position = UDim2.new(0.01, 0, 0.25, 0),
+Visible = false,
+Image = "rbxassetid://127163414525948"
+})
+Corner(UI_Grade)
+Stroke(UI_Grade)
+
+local SavePos = Create("Frame", UI_Grade, {Visible = false})
+
+local grade = Create("TextButton", TextButton, {
+Size = UDim2.new(0.1, 0, 0.7, 0),
+Position = UDim2.new(0.9, 0, 0.25, 0),
+AnchorPoint = Vector2.new(1, 0),
+Visible = false,
+Text = ""
+})
+Corner(grade)
+Stroke(grade)
+
+local function genSeq(steps)
+steps = math.clamp(steps or 8, 2, 8)
+local keys = {}
+for i = 0, steps - 1 do
+local t = i / (steps - 1)
+table.insert(keys, ColorSequenceKeypoint.new(t, Color3.fromHSV(t, 1, 1)))
+end
+return ColorSequence.new(keys)
+end
+
+Create("UIGradient", grade, {
+Rotation = 90,
+Color = genSeq(100)
+})
+
+local SavePos2 = Create("Frame", grade, {Visible = false, Size = UDim2.new(1, 0, 0, 0)})
+
+local bg = Create("Frame", TextButton, {
+Size = UDim2.new(1, 0, 0, 1),
+Position = UDim2.new(0, 0, 0, 0),
+Visible = false
+})
+Stroke(bg)
+
+local sel1 = Create("Frame", grade, {
+Size = UDim2.new(0.3, 0, 0.13, 0),
+Position = UDim2.new(0, 0, ColorH, 0),
+BackgroundTransparency = 1
+})
+Corner(sel1, {CornerRadius = UDim.new(2, 0)})
+Stroke(sel1, {Color = Color3.fromRGB(255, 255, 255)})
+
+local sel2 = Create("Frame", UI_Grade, {
+Size = UDim2.new(0.054, 0, 0.13, 0),
+Position = UDim2.new(1 - ColorS, 0, 1 - ColorV, 0),
+BackgroundTransparency = 1
+})
+Corner(sel2, {CornerRadius = UDim.new(2, 0)})
+Stroke(sel2, {Color = Color3.fromRGB(255, 255, 255)})
+
+local function applyColor()
+Callback(Color3.fromHSV(ColorH, ColorS, ColorV))
+end
+local function updateColor()
+ColorH = sel1.Position.Y.Scale
+ColorS = 1 - sel2.Position.X.Scale
+ColorV = 1 - sel2.Position.Y.Scale
+UI_Grade.ImageColor3 = Color3.fromHSV(ColorH, 1, 1)
+picker.BackgroundColor3 = Color3.fromHSV(ColorH, ColorS, ColorV)
+applyColor()
+end

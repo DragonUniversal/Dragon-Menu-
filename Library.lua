@@ -723,3 +723,475 @@ Rotation = 45,
 Tween = true,
 Speed = 3
 })
+
+local Button1 = Create("TextButton", ScreenGui, {
+Size = UDim2.new(0.07, 0, 0.07, 0),
+AnchorPoint = Vector2.new(0.5, 1),
+Position = UDim2.new(0.5, 0, 0.9, 0),
+TextScaled = true,
+Text = "v",
+ZIndex = 10,
+TextColor3 = Color3.fromRGB(255, 255, 255),
+BackgroundTransparency = 1
+})
+
+Button1.MouseButton1Click:Connect(function()
+minimize1 = not minimize1
+if minimize1 then
+Button1.Text = "^"
+CreateTween1(frame, "Size", UDim2.new(0.5, 0, 0, 0), 0.3, true)
+CreateTween1(Button1, "Position", UDim2.new(0.5, 0, 1.005, 0), 0.3, false)
+frame.Visible = false
+else
+frame.Visible = true
+Button1.Text = "v"
+CreateTween1(frame, "Size", UDim2.new(0.5, 0, 0.1, 0), 0.3, true)
+CreateTween1(Button1, "Position", UDim2.new(0.5, 0, 0.9, 0), 0.3, false)
+end
+end)
+
+local TimeLabelgui = Create("TextLabel", frame, {
+Size = UDim2.new(0.215, 0, 0.5, 0),
+Position = UDim2.new(0.005, 0, 0.235, 0),
+TextColor3 = Configs_HUB.Cor_Text,
+Font = Configs_HUB.Text_Font,
+BackgroundTransparency = 1,
+TextScaled = true,
+Text = ""
+})TextSetColor(TimeLabelgui)
+
+local RobloxVersion = Create("TextLabel", frame, {
+Size = UDim2.new(0.2, 0, 0.35, 0),
+TextSize = 20,
+TextWrapped = true,
+TextScaled = true,
+Position = UDim2.new(0.2 + 0.5, 0, 0.31, 0),
+TextColor3 = Configs_HUB.Cor_Text,
+Font = Configs_HUB.Text_Font,
+BackgroundTransparency = 1,
+Text = ""
+})TextSetColor(RobloxVersion)
+
+functions.createToggleButton = function(parent, position, callback, initialState)
+local TextButton = Create("TextButton", parent, {
+Size = UDim2.new(0.13, 0, 0.17, 0),
+Position = position,
+BackgroundColor3 = Configs_HUB.Cor_Options,
+Name = "Frame",
+Text = "",
+BackgroundTransparency = 1,
+AutoButtonColor = false
+})Corner(TextButton)
+
+local Frame1 = Create("Frame", TextButton, {
+Size = UDim2.new(1, 0, 1, 0),
+BackgroundTransparency = 1,
+})
+Corner(Frame1, {CornerRadius = UDim.new(1, 0)})
+local Stroke = Stroke(Frame1, {Thickness = 2})
+
+local Frame2 = Create("Frame", Frame1, {
+Size = UDim2.new(0.4, 0, 0.95, 0),
+Position = UDim2.new(0, 0, 0.49, 0),
+AnchorPoint = Vector2.new(0, 0.5),
+BackgroundColor3 = Configs_HUB.Cor_Stroke
+})
+Corner(Frame2, {CornerRadius = UDim.new(1, 0)})
+
+local OnOff = initialState
+
+local function setState(state)
+OnOff = state
+if OnOff then
+clicktoggle:Play()
+CreateTween(Frame2, "Position", UDim2.new(0.6, 0, 0.5, 0), 0.2, false)
+CreateTween(Frame2, "BackgroundColor3", Color3.fromRGB(30, 140, 200), 0.2, false)
+CreateTween(Stroke, "Color", Color3.fromRGB(30, 140, 200), 0.2, false)
+callback(true)
+else
+falsetoggle:Play()
+CreateTween(Frame2, "Position", UDim2.new(0, 0, 0.5, 0), 0.2, false)
+CreateTween(Frame2, "BackgroundColor3", Configs_HUB.Cor_Stroke, 0.2, false)
+CreateTween(Stroke, "Color", Configs_HUB.Cor_Stroke, 0.2, false)
+callback(false)
+end
+end
+
+TextButton.MouseButton1Click:Connect(function()
+setState(not OnOff)
+end)
+
+TextButton.AncestryChanged:Connect(function(_, parent)
+if not parent and OnOff then
+setState(false)
+end
+end)
+
+return setState
+end
+
+functions.createSettingSection = function(parent, title, description, buttonCallback, buttonState)
+local sectionFrame = Create("Frame", parent, {
+Size = UDim2.new(0.96, 0, 0.4, 0),
+BackgroundColor3 = Configs_HUB.Cor_Hub,
+BackgroundTransparency = 0
+})local Stroke = Stroke(sectionFrame, {Thickness = 2})
+
+local titleLabel = Create("TextLabel", sectionFrame, {
+Size = UDim2.new(1, 0, 0.2, 0),
+TextScaled = true,
+TextXAlignment = Enum.TextXAlignment.Left,
+BackgroundTransparency = 1,
+TextColor3 = Configs_HUB.Cor_Text,
+Text = title
+})
+TextSetColor(titleLabel)
+
+local descriptionLabel = Create("TextLabel", sectionFrame, {
+Size = UDim2.new(1, 0, 0.5, 0),
+TextScaled = true,
+TextXAlignment = Enum.TextXAlignment.Left,
+BackgroundTransparency = 1,
+Position = UDim2.new(0, 0, 0.2, 0),
+TextColor3 = Configs_HUB.Cor_Text,
+Text = description
+})
+TextSetColor(descriptionLabel)
+
+local toggleButtonPosition = UDim2.new(0.81, 0, 0.75, 0)
+local toggleButtonState = functions.createToggleButton(sectionFrame, toggleButtonPosition, buttonCallback, buttonState)
+
+return toggleButtonState
+end
+
+functions.createTextboxWithButton = function(parent, title, description, callback)
+local sectionFrame = Create("Frame", parent, {
+Size = UDim2.new(0.96, 0, 0.4, 0),
+BackgroundColor3 = Configs_HUB.Cor_Hub,
+BackgroundTransparency = 0
+})local Stroke = Stroke(sectionFrame, {Thickness = 2})
+
+local titleLabel = Create("TextLabel", sectionFrame, {
+Size = UDim2.new(1, 0, 0.2, 0),
+TextScaled = true,
+TextXAlignment = Enum.TextXAlignment.Left,
+BackgroundTransparency = 1,
+TextColor3 = Configs_HUB.Cor_Text,
+Text = title
+})
+TextSetColor(titleLabel)
+
+local descriptionLabel = Create("TextLabel", sectionFrame, {
+Size = UDim2.new(1, 0, 0.6, 0),
+TextScaled = true,
+TextXAlignment = Enum.TextXAlignment.Left,
+BackgroundTransparency = 1,
+Position = UDim2.new(0, 0, 0.2, 0),
+TextColor3 = Configs_HUB.Cor_Text,
+Text = description
+})
+TextSetColor(descriptionLabel)
+
+local messageTextbox = Create("TextBox", sectionFrame, {Size = UDim2.new(0.75, 0, 0.2, 0), Position = UDim2.new(0, 0, 0.8, 0), BackgroundColor3 = Configs_HUB.Cor_Options, TextColor3 = Configs_HUB.Cor_Text, PlaceholderText = "Enter your message here...", ClearTextOnFocus = true, TextScaled = true, Font = Configs_HUB.Text_Font})
+
+local sendButton = Create("TextButton", sectionFrame, {Size = UDim2.new(0.25, 0, 0.2, 0), Position = UDim2.new(0.75, 0, 0.8, 0), BackgroundColor3 = Configs_HUB.Cor_Options, TextColor3 = Configs_HUB.Cor_Text, Text = "Send Message", TextScaled = true, Font = Configs_HUB.Text_Font})
+
+sendButton.MouseButton1Click:Connect(function()
+local message = messageTextbox.Text
+if message and message:match("%S") then
+callback(message)
+messageTextbox.Text = ""
+messageTextbox.TextColor3 = Configs_HUB.Cor_Text
+else
+messageTextbox.Text = "Please enter a message."
+messageTextbox.TextColor3 = Color3.new(1, 0, 0)
+end
+end)
+
+messageTextbox.Focused:Connect(function()
+if messageTextbox.Text == "Please enter a message." then
+messageTextbox.Text = ""
+messageTextbox.TextColor3 = Configs_HUB.Cor_Text
+end
+end)
+
+return sectionFrame
+end
+
+functions.createTextBox = function(parent, title, description, buttonText, callback, minValue, maxValue)
+local sectionFrame = Create("Frame", parent, {
+Size = UDim2.new(0.96, 0, 0.4, 0),
+BackgroundColor3 = Configs_HUB.Cor_Hub,
+BackgroundTransparency = 0
+})
+local Stroke = Stroke(sectionFrame, {Thickness = 2})
+
+local titleLabel = Create("TextLabel", sectionFrame, {
+Size = UDim2.new(1, 0, 0.2, 0),
+TextScaled = true,
+TextXAlignment = Enum.TextXAlignment.Left,
+BackgroundTransparency = 1,
+TextColor3 = Configs_HUB.Cor_Text,
+Text = title
+})
+TextSetColor(titleLabel)
+
+local descriptionLabel = Create("TextLabel", sectionFrame, {
+Size = UDim2.new(1, 0, 0.6, 0),
+TextScaled = true,
+TextXAlignment = Enum.TextXAlignment.Left,
+BackgroundTransparency = 1,
+Position = UDim2.new(0, 0, 0.2, 0),
+TextColor3 = Configs_HUB.Cor_Text,
+Text = description
+})
+TextSetColor(descriptionLabel)
+
+local inputBox = Create("TextBox", sectionFrame, {
+Size = UDim2.new(0.75, 0, 0.2, 0),
+Position = UDim2.new(0, 0, 0.8, 0),
+BackgroundColor3 = Configs_HUB.Cor_Options,
+Text = tostring(minValue or 0),
+TextScaled = true,
+TextColor3 = Configs_HUB.Cor_Text,
+Font = Configs_HUB.Text_Font
+})
+TextSetColor(inputBox)
+
+local sendButton = Create("TextButton", sectionFrame, {
+Size = UDim2.new(0.25, 0, 0.2, 0),
+Position = UDim2.new(0.75, 0, 0.8, 0),
+BackgroundColor3 = Configs_HUB.Cor_Options,
+TextColor3 = Configs_HUB.Cor_Text,
+Text = buttonText,
+TextScaled = true,
+Font = Configs_HUB.Text_Font
+})
+
+sendButton.MouseButton1Click:Connect(function()
+local value = tonumber(inputBox.Text)
+if value then
+if minValue then value = math.max(value, minValue) end
+if maxValue then value = math.min(value, maxValue) end
+inputBox.Text = tostring(value)
+callback(value)
+else
+inputBox.Text = tostring(minValue or 1)
+end
+end)
+
+return inputBox, sendButton
+end
+
+local framek = Create("Frame", ScreenGui, {
+Size = UDim2.new(0.7, 0, 0.64, 0),
+Position = UDim2.new(0.13, 0, 0.2, 0),
+BackgroundColor3 = Configs_HUB.Cor_Hub,
+Visible = false
+})
+
+local mainText = Create("TextLabel", framek, {
+Size = UDim2.new(1, 0, 0.15, 0),
+BackgroundTransparency = 0.7,
+Text = "Universal Viewer",
+TextColor3 = Configs_HUB.Cor_Text,
+Font = Configs_HUB.Text_Font,
+TextScaled = true
+})
+TextSetColor(mainText)
+
+Create("UIGradient", mainText, {
+Color = ColorSequence.new{
+ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 0, 0)),
+ColorSequenceKeypoint.new(0.5, Color3.fromRGB(255, 255, 255)),
+ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 255, 255))
+},
+Transparency = NumberSequence.new{
+NumberSequenceKeypoint.new(0, 1),
+NumberSequenceKeypoint.new(1, 0)
+},
+Rotation = 90
+})
+
+local frameGame = Create("ScrollingFrame", framek, {
+Size = UDim2.new(1, 0, 0.85, 0),
+Position = UDim2.new(0, 0, 0.15, 0),
+BackgroundColor3 = Color3.fromRGB(0, 0, 0),
+BackgroundTransparency = 1,
+CanvasSize = UDim2.new(0, 0, 5, 0),
+ScrollBarThickness = 0
+})
+Create("UIListLayout", frameGame, {
+Padding = UDim.new(0, 1),
+SortOrder = Enum.SortOrder.LayoutOrder,
+})
+Create("UIPadding", frameGame, {
+PaddingLeft = UDim.new(0.028, 0),
+PaddingTop = UDim.new(0.003, 0),
+PaddingBottom = UDim.new(0.003, 0)
+})
+
+functions.UpdatePlaces = function()
+local existing = {}
+for _, child in ipairs(frameGame:GetChildren()) do
+if not child:IsA("UIListLayout") and not child:IsA("UIPadding") then
+existing[child.Name] = child
+end
+end
+local desired = {}
+desired["MainGameLabel"] = true
+desired["Place_" .. tostring(gamePlaces[1].PlaceId)] = true
+if #gamePlaces <= 1 then
+desired["NoSplitLabel"] = true
+else
+desired["SplitGamesLabel"] = true
+for i = 2, #gamePlaces do
+desired["Place_" .. tostring(gamePlaces[i].PlaceId)] = true
+end
+end
+for name, node in pairs(existing) do
+if not desired[name] then
+node:Destroy()
+end
+end
+if not frameGame:FindFirstChild("MainGameLabel") then
+local lbl = Create("TextLabel", frameGame, {
+Name = "MainGameLabel",
+Size = UDim2.new(0.96, 0, 0.02, 0),
+BackgroundTransparency = 0.7,
+Text = "MainGame",
+TextColor3 = Configs_HUB.Cor_Text,
+Font = Configs_HUB.Text_Font,
+TextScaled = true
+})
+TextSetColor(lbl)
+Create("UIGradient", lbl, {
+Color = ColorSequence.new{
+ColorSequenceKeypoint.new(0, Color3.fromRGB(0,   0,   0)),
+ColorSequenceKeypoint.new(0.5, Color3.fromRGB(255, 255, 255)),
+ColorSequenceKeypoint.new(1,   Color3.fromRGB(255, 255, 255))
+},
+Transparency = NumberSequence.new{
+NumberSequenceKeypoint.new(0, 1),
+NumberSequenceKeypoint.new(1, 0)
+},
+Rotation = 90
+})
+end
+local mainPlace = gamePlaces[1]
+local mainName  = "Place_" .. tostring(mainPlace.PlaceId)
+if not frameGame:FindFirstChild(mainName) then
+local fr = Create("Frame", frameGame, {
+Name = mainName,
+Size = UDim2.new(0.96, 0, 0.12, 0),
+BackgroundColor3 = Configs_HUB.Cor_Hub
+})
+Create("UIGradient", fr, {
+Color = ColorSequence.new{
+ColorSequenceKeypoint.new(0,   Color3.fromRGB(255,   0,   0)),
+ColorSequenceKeypoint.new(0.5, Color3.fromRGB(255, 255, 255)),
+ColorSequenceKeypoint.new(1,   Color3.fromRGB(0,     0,   0))
+},
+Transparency = NumberSequence.new{
+NumberSequenceKeypoint.new(0, 1),
+NumberSequenceKeypoint.new(1, 0)
+},
+Rotation = 90
+})
+Create("ImageLabel", fr, {
+Size = UDim2.new(0.25, 0, 1, 0),
+BackgroundTransparency = 1,
+Position = UDim2.new(0, 0, 0, 0),
+Image = "rbxthumb://type=Asset&id=" .. mainPlace.PlaceId .. "&w=420&h=420"
+})
+Create("TextLabel", fr, {
+Size = UDim2.new(0.05, 0, 0.09, 0),
+Position = UDim2.new(0.252, 0, 0, 0),
+Text = "1",
+BackgroundTransparency = 1,
+TextColor3 = Configs_HUB.Cor_Text,
+Font = Configs_HUB.Text_Font,
+TextScaled = true
+})
+Create("TextLabel", fr, {
+Size = UDim2.new(0.748, 0, 0.23, 0),
+Position = UDim2.new(0.252, 0, 0.16, 0),
+Text = "Name: " .. mainPlace.Name,
+BackgroundTransparency = 1,
+TextColor3 = Configs_HUB.Cor_Text,
+TextXAlignment = Enum.TextXAlignment.Left,
+Font = Configs_HUB.Text_Font,
+TextScaled = true
+})
+Create("TextLabel", fr, {
+Size = UDim2.new(0.748, 0, 0.23, 0),
+Position = UDim2.new(0.252, 0, 0.4, 0),
+Text = "Id: " .. mainPlace.PlaceId,
+BackgroundTransparency = 1,
+TextColor3 = Configs_HUB.Cor_Text,
+TextXAlignment = Enum.TextXAlignment.Left,
+Font = Configs_HUB.Text_Font,
+TextScaled = true
+})
+local tb = Create("TextButton", fr, {
+Size = UDim2.new(1, 0, 0.17, 0),
+Position = UDim2.new(0, 0, 0.83, 0),
+BackgroundColor3 = Configs_HUB.Cor_Hub,
+TextColor3 = Configs_HUB.Cor_Text,
+Font = Configs_HUB.Text_Font,
+BackgroundTransparency = 0,
+Text = "Play",
+TextScaled = true
+})
+tb.MouseButton1Click:Connect(function()
+TeleportService:Teleport(mainPlace.PlaceId, game.Players.LocalPlayer)
+end)
+Create("UIGradient", tb, {
+Color = ColorSequence.new{
+ColorSequenceKeypoint.new(0,   Color3.fromRGB(255,   0,   0)),
+ColorSequenceKeypoint.new(0.5, Color3.fromRGB(255, 255, 255)),
+ColorSequenceKeypoint.new(1,   Color3.fromRGB(0,     0,   0))
+},
+Transparency = NumberSequence.new{
+NumberSequenceKeypoint.new(0, 0),
+NumberSequenceKeypoint.new(1, 0)
+},
+Rotation = 90
+})
+end
+if #gamePlaces <= 1 then
+if not frameGame:FindFirstChild("NoSplitLabel") then
+local lbl2 = Create("TextLabel", frameGame, {
+Name = "NoSplitLabel",
+Size = UDim2.new(0.96, 0, 0.02, 0),
+BackgroundTransparency = 0.7,
+Text = "This game does not have a split game",
+TextColor3 = Configs_HUB.Cor_Text,
+Font = Configs_HUB.Text_Font,
+TextScaled = true
+})
+TextSetColor(lbl2)
+Create("UIGradient", lbl2, {
+Color = ColorSequence.new{
+ColorSequenceKeypoint.new(0,   Color3.fromRGB(0,   255, 255)),
+ColorSequenceKeypoint.new(0.5, Color3.fromRGB(255, 255, 255)),
+ColorSequenceKeypoint.new(1,   Color3.fromRGB(0,     0,   0))
+},
+Transparency = NumberSequence.new{
+NumberSequenceKeypoint.new(0, 1),
+NumberSequenceKeypoint.new(1, 0)
+},
+Rotation = 90
+})
+end
+else
+if not frameGame:FindFirstChild("SplitGamesLabel") then
+local lbl3 = Create("TextLabel", frameGame, {
+Name = "SplitGamesLabel",
+Size = UDim2.new(0.96, 0, 0.02, 0),
+BackgroundTransparency = 0,
+Text = "Splitgame",
+TextColor3 = Configs_HUB.Cor_Text,
+Font = Configs_HUB.Text_Font,
+TextScaled = true
+})

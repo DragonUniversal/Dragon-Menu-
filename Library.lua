@@ -3147,3 +3147,482 @@ Tweening = false
 end
 end)
 
+functions.ShiftLock = function(_, state)
+if state == Enum.UserInputState.Begin then
+ShiftLockButton:MouseButton1Click()
+end
+end
+
+local ShiftLockAction = ContextActionService:BindAction("Shift Lock", functions.ShiftLock, false, "On")
+ContextActionService:SetPosition("Shift Lock", UDim2.new(0.8, 0, 0.8, 0))
+
+local uiStates = {
+framek = {frame = framek, state = false},
+framep = {frame = framep, state = false},
+frameinfogui = {frame = frameinfogui, state = false},
+Menu = {frame = Menu, state = true},
+frameSetting = {frame = frameSetting, state = false}
+}local activeButton, cameraback = nil, true
+
+local strokeeffect = Create("Frame", frame, {
+Size = UDim2.new(0.06, 0, 0.6, 0),
+Position = UDim2.new(0.22, 0, 0.22, 0),
+BackgroundTransparency = 1,
+ZIndex = 10
+})
+
+local stroke = Create("UIStroke", strokeeffect, {
+Color = Color3.fromRGB(255, 255, 255),
+ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
+Transparency = 0
+})
+
+functions.MoveStrokePosition = function(button)
+CreateTween(strokeeffect, "Position", button.Position, 0.2, true)
+activeButton = button.Name
+end
+
+functions.bouncefov = function(action, string)
+CreateTween(workspace.CurrentCamera, "FieldOfView", 75, 0.07, true)
+task.wait(0.1)
+CreateTween(workspace.CurrentCamera, "FieldOfView", 30, 0.07, true)
+end
+functions.Backfov = function(action, string)
+CreateTween(workspace.CurrentCamera, "FieldOfView", 70, 0.07, true)
+end
+
+functions.closeOtherUI = function(exceptName)
+for name, data in pairs(uiStates) do
+if name ~= exceptName and data.state then
+if name == "Menu" then
+if IsMinimizedu then
+data.state = false
+CreateTween(Menu, "Size", UDim2.new(0.576, 0, 0, 0), 0.15, true)
+data.frame.Visible = false
+Menu.Position = UDim2.new(0.77, 0, 0.227, 0)
+else
+data.state = false
+CreateTween(data.frame, "Size", UDim2.new(data.frame.Size.X.Scale, 0, 0, 0), 0.3, true)
+data.frame.Visible = false
+Menu.Position = UDim2.new(0.77, 0, 0.227, 0)
+end
+elseif name == "frameinfogui" then
+if not cameraback then
+data.state = false
+if blur.Visible then
+CreateTween(blur, "BackgroundTransparency", 1, 0.05, true)
+task.delay(0.05, function()
+blur.Visible = false
+end)
+end
+functions.Backfov()
+CreateTween(data.frame, "Size", UDim2.new(data.frame.Size.X.Scale, 0, 0, 0), 0.3, true)
+task.delay(0.3, function()
+data.frame.Visible = false
+end)
+cameraback = true
+end
+else
+data.state = false
+CreateTween(data.frame, "Size", UDim2.new(data.frame.Size.X.Scale, 0, 0, 0), 0.3, true)
+data.frame.Visible = false
+end
+end
+end
+end
+
+SplitgameToggleButton.MouseButton1Click:Connect(function()
+if switchtodescription or ifClick or (switchtodescription and ifClick) then return end
+if not functions.canClick() then return end
+functions.MoveStrokePosition(SplitgameToggleButton)
+local state = uiStates.framek.state
+if not state then
+functions.closeOtherUI("framek")
+click1:Play()
+framek.Visible = true
+CreateTween(framek, "Size", UDim2.new(0.7, 0, 0.64, 0), 0.3, true)
+else
+click2:Play()
+CreateTween(framek, "Size", UDim2.new(0.7, 0, 0, 0), 0.3, true)
+framek.Visible = false
+end
+uiStates.framek.state = not state
+end)
+
+PlayerListToggleButton.MouseButton1Click:Connect(function()
+if switchtodescription or ifClick or (switchtodescription and ifClick) then return end
+if not functions.canClick() then return end
+functions.MoveStrokePosition(PlayerListToggleButton)
+local state = uiStates.framep.state
+if not state then
+functions.closeOtherUI("framep")
+click1:Play()
+framep.Visible = true
+CreateTween(framep, "Size", UDim2.new(0.6, 0, 0.64, 0), 0.3, true)
+else
+click2:Play()
+CreateTween(framep, "Size", UDim2.new(0.6, 0, 0, 0), 0.3, true)
+framep.Visible = false
+end
+uiStates.framep.state = not state
+end)
+
+infoToggleButton.MouseButton1Click:Connect(function()
+if switchtodescription or ifClick or (switchtodescription and ifClick) then return end
+if not functions.canClick() then return end
+functions.MoveStrokePosition(infoToggleButton)
+local state = uiStates.frameinfogui.state
+if not state then
+functions.closeOtherUI("frameinfogui")
+click1:Play()
+frameinfogui.Visible = true
+blur.Visible = true
+blur.BackgroundTransparency = 0.3
+CreateTween(blur, "BackgroundTransparency", 0.7, 0.05, true)
+functions.bouncefov()
+CreateTween(frameinfogui, "Size", UDim2.new(1, 0, 1, 0), 0.3, true)
+cameraback = false
+else
+click2:Play()
+CreateTween(blur, "BackgroundTransparency", 1, 0.05, true)
+functions.Backfov()
+CreateTween(frameinfogui, "Size", UDim2.new(0, 0, 0, 0), 0.3, true)
+task.delay(0.3, function()
+blur.Visible = false
+end)
+cameraback = true
+frameinfogui.Visible = false
+end
+uiStates.frameinfogui.state = not state
+end)
+
+Button.MouseButton1Click:Connect(function()
+if switchtodescription or ifClick or (switchtodescription and ifClick) then return end
+if not functions.canClick() then return end
+functions.MoveStrokePosition(Button)
+local state = uiStates.Menu.state
+if not state then
+functions.closeOtherUI("Menu")
+if IsMinimizedu then
+minimize = true
+Menu.Visible = true
+CreateTween(Menu, "Size", UDim2.new(0.576, 0, 0.051, 0), 0.15, true)
+else
+minimize = true
+ScrollBar.Visible = true
+Containers.Visible = true
+line_Containers.Visible = true
+Menu.Visible = true
+click1:Play()
+CreateTween(Menu, "Size", UDim2.new(0.576, 0, 0.545, 0), 0.3, false)
+end
+else
+if IsMinimizedu then
+minimize = false
+CreateTween(Menu, "Size", UDim2.new(0.576, 0, 0, 0), 0.15, true)
+Menu.Visible = false
+Menu.Position = UDim2.new(0.77, 0, 0.227, 0)
+else
+minimize = false
+CreateTween(Menu, "Size", UDim2.new(0.576, 0, 0, 0), 0.3, true)
+Menu.Visible = false
+ScrollBar.Visible = false
+Containers.Visible = false
+line_Containers.Visible = false
+Menu.Position = UDim2.new(0.77, 0, 0.227, 0)
+end
+end
+uiStates.Menu.state = not state
+end)
+
+SettingButton.MouseButton1Click:Connect(function()
+if switchtodescription or ifClick or (switchtodescription and ifClick) then return end
+if not functions.canClick() then return end
+functions.MoveStrokePosition(SettingButton)
+local state = uiStates.frameSetting.state
+if not state then
+functions.closeOtherUI("frameSetting")
+click1:Play()
+frameSetting.Visible = true
+CreateTween(frameSetting, "Size", UDim2.new(0.35, 0, 0.8, 0), 0.3, false)
+else
+click2:Play()
+CreateTween(frameSetting, "Size", UDim2.new(0.35, 0, 0, 0), 0.3, true)
+frameSetting.Visible = false
+end
+uiStates.frameSetting.state = not state
+end)
+
+RunServerlock("Lock1", "no", function()
+gradient_1.Rotation += 1
+gradient_2.Rotation += 1
+gradient_2_1.Rotation += 1
+gradient_3.Rotation += 1
+gradient_4.Rotation += 1
+gradient_4_1.Rotation += 1
+gradient_5.Rotation += 1
+gradient_6.Rotation += 1
+gradient_6_1.Rotation += 1
+gradient_6_2.Rotation += 2
+gradient_7.Rotation += 1
+for _, data in pairs(playerFrames) do
+if data.UI then
+local viewButton = data.UI:FindFirstChildOfClass("ImageButton")
+if viewButton and (not View or (View and View.button ~= viewButton)) then
+viewButton.Image = "rbxassetid://96859795672738"
+end
+end
+end
+if View and View.player and View.player.Character then
+local hrp = View.player.Character:FindFirstChild("HumanoidRootPart")
+if hrp and workspace.CurrentCamera.CameraSubject ~= hrp then
+workspace.CurrentCamera.CameraSubject = hrp
+end
+else
+local localChar = game.Players.LocalPlayer.Character
+if localChar then
+local localHumanoid = localChar:FindFirstChild("Humanoid")
+if localHumanoid and workspace.CurrentCamera.CameraSubject ~= localHumanoid then
+workspace.CurrentCamera.CameraSubject = localHumanoid
+workspace.CurrentCamera.CameraType = Enum.CameraType.Custom
+end
+end
+end
+if activeButton then
+for name, data in pairs(uiStates) do
+if name ~= activeButton and data.state then
+functions.closeOtherUI(name)
+end
+end
+end
+if ShiftLockmaingui and frameinfopy then
+frameinfoplayer.Visible = true
+else
+frameinfoplayer.Visible = false
+end
+for _, hi in pairs(CH) do
+if hi then hi:Destroy() end
+end
+CH = {}
+frame9.Text = string.format(
+"DisplayName: %s\nUserId: %s\nAccount⚒️: %s",
+game.Players.LocalPlayer.DisplayName,
+game.Players.LocalPlayer.UserId,
+functions.getAccountCreationDate(game.Players.LocalPlayer.AccountAge)
+)
+if Avatar then
+iconAvaterGamecreator.Visible = true
+iconGamecreator.Visible = false
+iconplayers.Image = "https://www.roblox.com/avatar-thumbnail/image?userId=" .. game.Players.LocalPlayer.UserId .. "&width=720&height=720&format=png"
+else
+iconAvaterGamecreator.Visible = false
+iconGamecreator.Visible = true
+iconplayers.Image = "https://www.roblox.com/headshot-thumbnail/image?userId=" .. game.Players.LocalPlayer.UserId .. "&width=720&height=720&format=png"
+end
+if switchtodescription then
+if not description.Visible then
+CreateTween(TimePlay, "Position", UDim2.new(0.5294 + 0.11, 0, 0.681 - 1, 0), 1, false)
+CreateTween(Position, "Position", UDim2.new(0.6026 + 0.11, 0, 0.762 - 1, 0), 1, false)
+CreateTween(AccountAge, "Position", UDim2.new(0.7781 + 0.11, 0, 0.681 - 1, 0), 1, false)
+CreateTween(Join, "Position", UDim2.new(0.4868 + 0.11, 0, 0.762 - 1, 0), 1, false)
+CreateTween(friendnumber, "Position", UDim2.new(0.67 + 0.11, 0, 0.03 - 1, 0), 1, false)
+CreateTween(iconfriend, "Position", UDim2.new(0.48 + 0.11, 0, 0.006 - 1, 0), 1, false)
+CreateTween(frame100, "Position", UDim2.new(0.6178 + 0.11, 0, 0.22 - 1, 0), 1, false)
+CreateTween(frameinfo, "Position", UDim2.new(0.04, 0, 0.24 - 1, 0), 1, false)
+CreateTween(GameName, "Position", UDim2.new(0.1, 0, 0.48 - 1, 0), 1, false)
+CreateTween(iconGame, "Position", UDim2.new(0.01, 0, 0.47 - 1, 0), 1, false)
+CreateTween(framecreatorinfo, "Position", UDim2.new(0.31, 0, 0.45 - 1, 0), 1, false)
+CreateTween(Gamecreatortext, "Position", UDim2.new(0.39, 0, 0.18 - 1, 0), 1, false)
+CreateTween(grouptext, "Position", UDim2.new(0.39, 0, 0.3 - 1, 0), 1, false)
+CreateTween(icongroupicon, "Position", UDim2.new(0.315, 0, 0.278 - 1, 0), 1, false)
+CreateTween(iconAvaterGamecreator, "Position", UDim2.new(0.315, 0, 0.162 - 1, 0), 1, false)
+CreateTween(iconGamecreator, "Position", UDim2.new(0.315, 0, 0.162 - 1, 0), 1, false)
+CreateTween(gameinfoframe, "Position", UDim2.new(0.032, 0, 0.74 - 1, 0), 1, false)
+CreateTween(AvaterToHead, "Position", UDim2.new(0.37, 0, 0.0765 - 1, 0), 1, false)
+CreateTween(Wellcome, "Position", UDim2.new(0.14, 0, 0.077 - 1, 0), 1, false)
+CreateTween(iconplayers, "Position", UDim2.new(0.05, 0, 0.06 - 1, 0), 1, false)
+CreateTween(welcometext, "Position", UDim2.new(0.39, 0, 0.66 - 1, 0), 1, false)
+CreateTween(iconvideo, "Position", UDim2.new(0.315, 0, 0.638 - 1, 0), 1, true)
+description.Visible = true
+info_d.Visible = true
+info_group.Visible = true
+CreateTween(info_d, "Position", UDim2.new(0.48, 0, 0.24, 0), 1, false)
+CreateTween(info_group, "Position", UDim2.new(0.725, 0, 0.2, 0), 1, false)
+CreateTween(description, "Position", UDim2.new(0.02, 0, 0.37, 0), 1, true)
+switchpage.Text = "Switch To Page 1"
+end
+else
+if description.Visible then
+CreateTween(TimePlay, "Position", UDim2.new(0.5294 + 0.11, 0, 0.681, 0), 1, false)
+CreateTween(Position, "Position", UDim2.new(0.6026 + 0.11, 0, 0.762, 0), 1, false)
+CreateTween(AccountAge, "Position", UDim2.new(0.7781 + 0.11, 0, 0.681, 0), 1, false)
+CreateTween(Join, "Position", UDim2.new(0.4868 + 0.11, 0, 0.762, 0), 1, false)
+CreateTween(friendnumber, "Position", UDim2.new(0.67 + 0.11, 0, 0.03, 0), 1, false)
+CreateTween(iconfriend, "Position", UDim2.new(0.48 + 0.11, 0, 0.006, 0), 1, false)
+CreateTween(frame100, "Position", UDim2.new(0.6178 + 0.11, 0, 0.22, 0), 1, false)
+CreateTween(frameinfo, "Position", UDim2.new(0.04, 0, 0.24, 0), 1, false)
+CreateTween(GameName, "Position", UDim2.new(0.1, 0, 0.48, 0), 1, false)
+CreateTween(iconGame, "Position", UDim2.new(0.01, 0, 0.47, 0), 1, false)
+CreateTween(framecreatorinfo, "Position", UDim2.new(0.31, 0, 0.45, 0), 1, false)
+CreateTween(Gamecreatortext, "Position", UDim2.new(0.39, 0, 0.18, 0), 1, false)
+CreateTween(grouptext, "Position", UDim2.new(0.39, 0, 0.3, 0), 1, false)
+CreateTween(icongroupicon, "Position", UDim2.new(0.315, 0, 0.278, 0), 1, false)
+CreateTween(iconAvaterGamecreator, "Position", UDim2.new(0.315, 0, 0.162, 0), 1, false)
+CreateTween(iconGamecreator, "Position", UDim2.new(0.315, 0, 0.162, 0), 1, false)
+CreateTween(gameinfoframe, "Position", UDim2.new(0.032, 0, 0.74, 0), 1, false)
+CreateTween(AvaterToHead, "Position", UDim2.new(0.37, 0, 0.0765, 0), 1, false)
+CreateTween(Wellcome, "Position", UDim2.new(0.14, 0, 0.077, 0), 1, false)
+CreateTween(iconplayers, "Position", UDim2.new(0.05, 0, 0.06, 0), 1, false)
+CreateTween(welcometext, "Position", UDim2.new(0.39, 0, 0.66, 0), 1, false)
+CreateTween(iconvideo, "Position", UDim2.new(0.315, 0, 0.638, 0), 1, true)
+CreateTween(description, "Position", UDim2.new(0.02, 0, 0.37 - 1, 0), 1, false)
+CreateTween(info_group, "Position", UDim2.new(0.725, 0, 0.2 - 1, 0), 1, false)
+CreateTween(info_d, "Position", UDim2.new(0.48, 0, 0.24 - 1, 0), 1, true)
+task.delay(1, function()
+info_group.Visible = false
+description.Visible = false
+info_d.Visible = false
+switchpage.Text = "Switch To Page 2"
+end)
+end
+end
+iconGame.Image = "https://assetgame.roblox.com/Game/Tools/ThumbnailAsset.ashx?aid=" .. result.IconImageAssetId .. "&fmt=png&wd=500&ht=500"
+functions.UpdatePlayerList()
+functions.updatePlaytime()
+functions.updateTime()
+end)
+
+RunServerlock("Lock2", 5, function()
+local funcs = loadstring(game:HttpGet("https://raw.githubusercontent.com/hooaczx/Script/main/GetPlace"))()
+funcs.updatePlaceInfo(GameName, frame79)
+local c_f = loadstring(game:HttpGet("https://raw.githubusercontent.com/hooaczx/Script/main/List_group"))()
+c_f.UpdateGroups(List_group, ScreenGui, Corner, Stroke, TextSetColor)
+functions.checkFriends()
+functions.startUpdating()
+functions.UpdatePlaces()
+end)
+
+RunServerlock("Lock3", 5, function()
+local nti = loadstring(game:HttpGet("https://raw.githubusercontent.com/hooaczx/Script/main/GetRobloxVersion"))()
+local info = nti.GetInfo()
+info_T.Text = string.format(
+"Network: \n%s\n%s\n\nDevice: \n%s\n%s\n%s\n%s\n\nLocation: \n%s\n%s\n%s\n%s\n%s",
+info.ip, info.isp,
+info.device, info.resolution, info.viewport1, info.viewport2,
+info.country, info.region, info.city, info.capital, info.currency
+)RobloxVersion.Text = info.version
+local getCreatorGameandGroupinfo = loadstring(game:HttpGet("https://raw.githubusercontent.com/hooaczx/Script/main/Group%7CCreatorGame%7Cinfo"))()
+local creatorInfo = getCreatorGameandGroupinfo(_cvZ)
+frame199.Text = string.format(
+"Name: %s\nDisplayName: %s\nUserId: %s\nGroup Status: %s\nAccount⚒️: %s",
+creatorInfo.Username,
+creatorInfo.DisplayName,
+tostring(creatorInfo.UserId),
+creatorInfo.JoinGroupStatus,
+creatorInfo.CreationDate
+)
+Gamecreatortext.Text = "Creator_Game"
+grouptext.Text = creatorInfo.GroupName.."\n"..creatorInfo.MemberCount
+iconGamecreator.Image = creatorInfo.headUrl
+iconAvaterGamecreator.Image = creatorInfo.AvaterUrl
+icongroupicon.Image = creatorInfo.GroupIcon
+if description.Visible then
+functions.UpdateDescription({fromFrame = 1,Text = "Your Description Account", description=functions.getplayerdescription(game.Players.LocalPlayer.UserId), image = "https://www.roblox.com/headshot-thumbnail/image?userId="..game.Players.LocalPlayer.UserId.."&width=720&height=720&format=png", textscaled = true})
+functions.UpdateDescription({fromFrame = 2,Text = "Creator Game Account Description", description=functions.getplayerdescription(tostring(creatorInfo.UserId)), image = "https://www.roblox.com/headshot-thumbnail/image?userId="..tostring(creatorInfo.UserId).."&width=720&height=720&format=png", textscaled = true})
+functions.UpdateDescription({fromFrame = 3,Text = "Game Description", description = functions.getGameDesc(PlaceId), image = "https://assetgame.roblox.com/Game/Tools/ThumbnailAsset.ashx?aid="..result.IconImageAssetId.."&fmt=png&wd=500&ht=500", textscaled = true})
+functions.UpdateDescription({fromFrame = 4,Text = "Group Description", description = creatorInfo.GroupDescription, image = creatorInfo.GroupIcon, textscaled = true})
+end
+end)
+
+ScreenGui.AncestryChanged:Connect(function()
+if not cameraback then
+functions.Backfov()
+end
+if not ScreenGui:IsDescendantOf(game) then
+if rainSound then rainSound:Destroy() end
+if notifyfriend then notifyfriend:Destroy() end
+if notifyfriendleave then notifyfriendleave:Destroy() end
+if click1 then click1:Destroy() end
+if click2 then click2:Destroy() end
+if falsetoggle then falsetoggle:Destroy() end
+if clicktoggle then clicktoggle:Destroy() end
+for name, conn in pairs(stopupdateall) do
+print(name)
+conn:Disconnect()
+stopupdateall[name] = nil
+end
+if ShiftLockmaingui then
+local char = game.Players.LocalPlayer.Character
+if char then
+local hum = char:FindFirstChildOfClass("Humanoid")
+if hum then
+hum.AutoRotate = true
+end
+end
+for _, highlight in pairs(CH) do
+if highlight then
+highlight:Destroy()
+end
+end
+CH = {}
+ShiftLockButton.Image = States.Off
+workspace.CurrentCamera.CFrame *= DISABLED_OFFSET
+ShiftlockCursor.Visible = false
+frameinfopy = false
+if ShiftLockmaingui then
+ShiftLockmaingui:Disconnect()
+ShiftLockmaingui = nil
+end
+Tweening = false
+end
+if View then
+local hum = game.Players.LocalPlayer.Character:FindFirstChild("Humanoid")
+if hum then
+workspace.CurrentCamera.CameraSubject = hum
+end
+for _, data in pairs(playerFrames) do
+if data.UI and data.UI.Parent then
+data.UI:Destroy()
+end
+end
+table.clear(playerFrames)
+end
+end
+end)
+end
+
+local firstVisible = true
+local firstTabSet = false
+local textsize = 15
+local textcolor = Configs_HUB.Cor_Text
+
+function MakeTab(Configs)
+local TabName = Configs.Name or "Tab"
+local TabImage = Configs.image
+for _, tab in pairs(ScrollBar:GetChildren()) do
+if tab:IsA("Frame") then
+local label = tab:FindFirstChild("TextLabel")
+if label and label.Text == TabName then
+tab:Destroy()
+end
+end
+end
+for _, container in pairs(Containers:GetChildren()) do
+if container:IsA("ScrollingFrame") and container.Name == TabName then
+container:Destroy()
+end
+end
+
+local Frame = Create("Frame", ScrollBar, {
+Size = UDim2.new(0.95, 0, 0.1, 0),
+BackgroundTransparency = 1
+})
+Corner(Frame)
+local FrameStroke = Stroke(Frame, {Thickness = 1})
+
+local TextButton = Create("TextButton", Frame, {
+Size = UDim2.new(1, 0, 1, 0),
+BackgroundTransparency = 1,
+Text = ""
+})
+
